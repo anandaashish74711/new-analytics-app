@@ -3,8 +3,7 @@ import Profile from './Profile'
 export default function Body() {
   return (
     <div>
-        Body
- <Profile/>
+<Profile/>
     </div>
   )
 }
