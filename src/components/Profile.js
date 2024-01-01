@@ -25,7 +25,7 @@ export default function Profile() {
           <p>Height: {userData.height}</p>
           <p>Weight: {userData.weight}</p>
           <p>BMI: {userData.BMI}</p>
-         
+         //
         </div>
       )}
     </div>
