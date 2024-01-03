@@ -11,12 +11,12 @@ export default function Profile() {
   }, [dispatch]);
 
   return (
-    <div className="p-4 w-96 bg-secondary rounded-lg shadow-md">
+    <div className="py-6 m-5 w-64 bg-secondary rounded-lg shadow-md bg-green-400">
       <h1 className="text-2xl font-bold mb-4 text-center">Profile</h1>
 
       {userData && (
         <div className="flex flex-col items-center">
-          <div className="w-24 h-44 rounded-full overflow-hidden mb-4">
+          <div className=" h-44 rounded-full overflow-hidden mb-4">
            
           </div>
           <p className="text-primary text-lg font-medium mb-2">{userData.name}</p>
