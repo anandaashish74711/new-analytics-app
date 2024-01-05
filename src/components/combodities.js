@@ -7,10 +7,6 @@ export default function ComorbiditiesCard() {
   const { loading, error, users } = useSelector((state) => state.app);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
-
   return (
     <div className="container mx-auto p-4">
       {loading && <p>Loading...</p>}

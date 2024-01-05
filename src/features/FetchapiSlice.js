@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import DATA from '../data/data.js'
 
 // Assuming you have a URL for your API endpoint
 const apiUrl = "http://localhost:4000/api/v1//patientinfo/6564c248b30f32776ed6270a";
@@ -11,7 +12,7 @@ export const getUser = createAsyncThunk("getUser", async () => {
 
     // Check if the response is successful (status code 200-299)
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(`HTT uP error! Status: ${response.status}`);
     }
 
     // Parse the response JSON
@@ -30,11 +31,15 @@ export const getUser = createAsyncThunk("getUser", async () => {
 const userDetailSlice = createSlice({
   name: "userDetail",
   initialState: {
-    users: [],
-    loading: false,
-    error: null,
+    users: DATA,
+    isloading: false,
   },
-  reducers: {},
+  reducers: {
+    setloading:(state,action)=>{
+      state.isloading = action.payload
+    },
+
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
@@ -50,5 +55,7 @@ const userDetailSlice = createSlice({
       });
   },
 });
+
+export const {setloading} = userDetailSlice.actions
 
 export default userDetailSlice.reducer;

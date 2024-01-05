@@ -8,7 +8,7 @@ export default function Profile() {
 
   useEffect(() => {
     dispatch(getUser());
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="py-6 m-5 w-64 bg-secondary rounded-lg shadow-md bg-green-400">

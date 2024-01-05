@@ -1,22 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUser } from '../features/FetchapiSlice';
 
-function PhaseGraph({ userData }) {
+function PhaseGraph() {
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.app);
+
+
+ 
+
   return (
-    <div>
-      <div>PhaseGraph</div>
-      {userData && (
-        <div>
-          <h2>Comorbidities:</h2>
-          <ul>
-            {Object.entries(userData.comorbidities).map(([key, value]) => (
-              <li key={key}>
-                {key}: {value ? 'Yes' : 'No'}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+    <div>PhaseGraph</div>
   );
 }
 
