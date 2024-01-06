@@ -23,52 +23,33 @@ function sampleArray(array, sampleSize) {
   return sampledArray;
 }
 
-
 function BioGraph() {
-  const {users,loading,error}= useSelector((state) => state.app);
+  const { users, loading, error } = useSelector((state) => state.app);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!users.visit && !loading) {
       console.log('Dispatching getUser...');
       dispatch(getUser());
-  } 
-})
+    }
+  }, [users, loading, dispatch]);
 
+  const [frequencyFilter, setFrequencyFilter] = useState({ min: 0, max: 100 });
+  const [visualizationType, setVisualizationType] = useState('bioImpedance');
 
-const [frequencyFilter, setFrequencyFilter] = useState({ min: 0, max: 100 });
-
-
-
-  if (!users || !users.visit) {
-    // Handle the case where userData or userData.visit is undefined
-    return <div>Loading...</div>;
-  }
-
-  const handleFrequencyChange = (event, type) => {
-    const value = parseFloat(event.target.value);
-    setFrequencyFilter((prevFilter) => ({ ...prevFilter, [type]: value }));
-  };
- 
   const applyFrequencyFilter = (users, frequencyFilter) => {
     const { min, max } = frequencyFilter;
-  
-    // Logging the MedicalData array for debugging purposes
+
     console.log(users.visit.MedicalData);
-  
+
     return users.visit.flatMap((visit) =>
       visit.MedicalData.filter((item) => {
-        // Log the frequency for each item
         console.log('Item Frequency:', item.frequency);
-  
-        // Filter based on the frequency range
         return item.frequency >= min && item.frequency <= max;
       })
     );
   };
-  
-  
-  // Assuming data structure is available and contains bioImpedanceValues and timestamps
+
   const allBioImpedanceValues = users.visit.flatMap((visit) =>
     visit.MedicalData.map((medicalData) => medicalData.bioImpedance)
   );
@@ -76,50 +57,59 @@ const [frequencyFilter, setFrequencyFilter] = useState({ min: 0, max: 100 });
     visit.MedicalData.map((medicalData) => medicalData.timestamp)
   );
 
-  // Filter data based on selected frequency
-  const filteredMedicalData = applyFrequencyFilter(users, frequencyFilter);
-
-
-  const filteredBioImpedanceValues = filteredMedicalData.map((item) => item.bioImpedance);
-
-  // Use only a sampled subset of values
-  const sampleSize = 500; // Adjust the sample size as needed
-  const bioImpedanceValues = sampleArray(filteredBioImpedanceValues, sampleSize);
-  const timestamps = sampleArray(allTimestamps, sampleSize).sort(
-    (a, b) => new Date(a) - new Date(b)
-  ); // Sort timestamps
-
-  console.log('Timestamps:', timestamps);
-  console.log('Bioimpedance Values:', bioImpedanceValues);
-
-  const chartData = {
-    labels: timestamps,
-    datasets: [
-      {
-        label: 'Bioimpedance Values',
-        data: bioImpedanceValues,
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderWidth: 1,
-        pointBackgroundColor: 'blue',
-      },
-    ],
+  const handleFrequencyChange = (event, type) => {
+    const value = parseFloat(event.target.value);
+    setFrequencyFilter((prevFilter) => ({ ...prevFilter, [type]: value }));
   };
+
+  const toggleVisualizationType = () => {
+    setVisualizationType((prevType) => (prevType === 'bioImpedance' ? 'phaseAngle' : 'bioImpedance'));
+  };
+
+  const getChartData = () => {
+    const dataKey = visualizationType === 'bioImpedance' ? 'bioImpedance' : 'phaseAngle';
+
+    const filteredMedicalData = applyFrequencyFilter(users, frequencyFilter);
+
+    const filteredValues = filteredMedicalData.map((item) => item[dataKey]);
+
+    const sampleSize = 50;
+    const values = sampleArray(filteredValues, sampleSize);
+    const timestamps = sampleArray(allTimestamps, sampleSize).sort(
+      (a, b) => new Date(a) - new Date(b)
+    );
+
+    return {
+      labels: timestamps,
+      datasets: [
+        {
+          label: `${visualizationType === 'bioImpedance' ? 'Bioimpedance' : 'Phase Angle'} Values`,
+          data: values,
+          backgroundColor: 'rgba(75,192,192,0.2)',
+          borderColor: 'rgba(75,192,192,1)',
+          borderWidth: 1,
+          pointBackgroundColor: 'blue',
+        },
+      ],
+    };
+  };
+
   const options = {
     type: 'line',
-    data: chartData, // Corrected from data: data,
+    
     options: {
       plugins: {
         title: {
           text: 'Chart.js Time Scale',
-          display: true
-        }
+          display: true,
+          responsive: true,
+    maintainAspectRatio: false
+        },
       },
       scales: {
         x: {
           type: 'time',
           time: {
-            // Luxon format string
             tooltipFormat: 'DD T',
           },
           title: {
@@ -130,16 +120,13 @@ const [frequencyFilter, setFrequencyFilter] = useState({ min: 0, max: 100 });
         y: {
           title: {
             display: true,
-            text: 'value',
+            text: 'Value',
           },
         },
       },
       responsive: true,
     },
   };
-  
-
-  console.log('Chart Data:', chartData);
 
   return (
     <div>
@@ -160,7 +147,10 @@ const [frequencyFilter, setFrequencyFilter] = useState({ min: 0, max: 100 });
           onChange={(e) => handleFrequencyChange(e, 'max')}
         />
       </div>
-      <Line data={chartData} options={options} />
+      <button onClick={toggleVisualizationType}>
+        Toggle Visualization Type ({visualizationType === 'bioImpedance' ? 'Phase Angle' : 'Bioimpedance'})
+      </button>
+      <Line data={getChartData()} options={options} />
     </div>
   );
 }

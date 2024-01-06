@@ -8,10 +8,10 @@ export default function Profile() {
 
   useEffect(() => {
     dispatch(getUser());
-  }, []);
+  });
 
   return (
-    <div className="py-6 m-5 w-64 bg-secondary rounded-lg shadow-md bg-green-400">
+    <div className="py-6 m-5 w-64 bg-secondary rounded-lg shadow-md bg-transparent">
       <h1 className="text-2xl font-bold mb-4 text-center">Profile</h1>
 
       {userData && (
@@ -22,7 +22,7 @@ export default function Profile() {
           <p className="text-primary text-lg font-medium mb-2">{userData.name}</p>
           <div className="grid grid-cols-2 gap-4 w-full">
             <div>
-              <p style={{ display: 'inline-block' }} className="text-gray-700 text-sm mb-2">Age:</p>
+              <p style={{ display: 'inline-block' }} className="text-white text-sm mb-2">Age:</p>
               <p style={{ display: 'inline-block' }} className="text-primary text-lg font-medium">{userData.age}</p>
             </div>
             <div>

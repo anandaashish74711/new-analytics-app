@@ -5,7 +5,7 @@ import BioGraph from './BioGraph'
 import ComorbiditiesCard from './combodities'
 export default function Body() {
   return (
- <div className='flex'>
+ <div className='flex bg-cyan-950'>
   <div className='w-1/4 p-4'>
 <Profile/>
 </div>
