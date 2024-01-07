@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as chartJs, LineElement, CategoryScale, LinearScale, PointElement, TimeScale } from 'chart.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../features/FetchapiSlice';
 
 chartJs.register(
   LineElement,
@@ -24,19 +23,25 @@ function sampleArray(array, sampleSize) {
 }
 
 function BioGraph() {
-  const { users, loading, error } = useSelector((state) => state.app);
+  const { users } = useSelector((state) => state.app);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!users.visit && !loading) {
-      console.log('Dispatching getUser...');
-      dispatch(getUser());
-      console.log('Dispatch complete')
-    }
-  }, []);
 
   const [frequencyFilter, setFrequencyFilter] = useState({ min: 0, max: 100 });
   const [visualizationType, setVisualizationType] = useState('bioImpedance');
+  const [filteredMedicalData, setFilteredMedicalData] = useState([]);
+  const [values, setValues] = useState([]);
+  const [sampleSize, setSampleSize] = useState(50);
+
+  useEffect(() => {
+    if (users) {
+      const filteredData = applyFrequencyFilter(users, frequencyFilter);
+      setFilteredMedicalData(filteredData);
+
+      // Modify this line based on your specific requirements for 'values'
+      const sampledValues = sampleArray(filteredData.map((item) => item[visualizationType]), sampleSize);
+      setValues(sampledValues);
+    }
+  }, [users, frequencyFilter, visualizationType, sampleSize]);
 
   const applyFrequencyFilter = (users, frequencyFilter) => {
     const { min, max } = frequencyFilter;
@@ -45,13 +50,6 @@ function BioGraph() {
       visit.MedicalData.filter((item) => item.frequency >= min && item.frequency <= max)
     );
   };
-
-  const allBioImpedanceValues = users.visit.flatMap((visit) =>
-    visit.MedicalData.map((medicalData) => medicalData.bioImpedance)
-  );
-  const allTimestamps = users.visit.flatMap((visit) =>
-    visit.MedicalData.map((medicalData) => medicalData.timestamp)
-  );
 
   const handleFrequencyChange = (event, type) => {
     const value = parseFloat(event.target.value);
@@ -65,15 +63,9 @@ function BioGraph() {
   const getChartData = () => {
     const dataKey = visualizationType === 'bioImpedance' ? 'bioImpedance' : 'phaseAngle';
 
-    const filteredMedicalData = applyFrequencyFilter(users, frequencyFilter);
-
-    const filteredValues = filteredMedicalData.map((item) => item[dataKey]);
-
-    const sampleSize = 50;
-    const values = sampleArray(filteredValues, sampleSize);
-    const timestamps = sampleArray(allTimestamps, sampleSize).sort(
-      (a, b) => new Date(a) - new Date(b)
-    );
+    const timestamps = sampleArray(users.visit.flatMap((visit) =>
+      visit.MedicalData.map((medicalData) => medicalData.timestamp)
+    ), sampleSize).sort((a, b) => new Date(a) - new Date(b));
 
     return {
       labels: timestamps,
@@ -123,42 +115,46 @@ function BioGraph() {
     },
   };
 
-  return (
-    <div className="bg-gray-200 min-h-screen p-4 rounded-sm">
-      <h2 className="text-2xl font-bold mb-4">BioGraph</h2>
-      <div className="mb-4">
-        <label htmlFor="minFrequency" className="mr-2">
-          Min Frequency:
-        </label>
-        <input
-          type="number"
-          id="minFrequency"
-          value={frequencyFilter.min}
-          onChange={(e) => handleFrequencyChange(e, 'min')}
-          className="border p-2"
-        />
-        <label htmlFor="maxFrequency" className="ml-4 mr-2">
-          Max Frequency:
-        </label>
-        <input
-          type="number"
-          id="maxFrequency"
-          value={frequencyFilter.max}
-          onChange={(e) => handleFrequencyChange(e, 'max')}
-          className="border p-2"
-        />
+  if (!users) {
+    return <h1>Loading</h1>;
+  } else {
+    return (
+      <div className="bg-gray-200 min-h-screen p-4 rounded-sm">
+        <h2 className="text-2xl font-bold mb-4">BioGraph</h2>
+        <div className="mb-4">
+          <label htmlFor="minFrequency" className="mr-2">
+            Min Frequency:
+          </label>
+          <input
+            type="number"
+            id="minFrequency"
+            value={frequencyFilter.min}
+            onChange={(e) => handleFrequencyChange(e, 'min')}
+            className="border p-2"
+          />
+          <label htmlFor="maxFrequency" className="ml-4 mr-2">
+            Max Frequency:
+          </label>
+          <input
+            type="number"
+            id="maxFrequency"
+            value={frequencyFilter.max}
+            onChange={(e) => handleFrequencyChange(e, 'max')}
+            className="border p-2"
+          />
+        </div>
+        <button
+          onClick={toggleVisualizationType}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+        >
+          Toggle Visualization Type ({visualizationType === 'bioImpedance' ? 'Phase Angle' : 'Bioimpedance'})
+        </button>
+        <div className="mt-4">
+          <Line data={getChartData()} options={options} />
+        </div>
       </div>
-      <button
-        onClick={toggleVisualizationType}
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-      >
-        Toggle Visualization Type ({visualizationType === 'bioImpedance' ? 'Phase Angle' : 'Bioimpedance'})
-      </button>
-      <div className="mt-4">
-        <Line data={getChartData()} options={options} />
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default BioGraph;

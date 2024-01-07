@@ -1,16 +1,12 @@
 // UserDetailComponent.js
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../features/FetchapiSlice";
 
 export default function ComorbiditiesCard() {
   const { loading, error, users } = useSelector((state) => state.app);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUser());
-  },);
-
+ 
   return (
     <div className="bg-gray-200 p-4 m-5 rounded-lg shadow-md w-64">
       {loading && <p className="text-center text-gray-500">Loading...</p>}

@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import DATA from '../data/data.js'
 
 // Assuming you have a URL for your API endpoint
 const apiUrl = "http://localhost:4000/api/v1//patientinfo/6564c248b30f32776ed6270a";
@@ -31,15 +30,14 @@ export const getUser = createAsyncThunk("getUser", async () => {
 const userDetailSlice = createSlice({
   name: "userDetail",
   initialState: {
-    users: DATA,
+    users:null,
     isloading: false,
   },
-  // reducers: {
-  //   setloading:(state,action)=>{
-  //     state.isloading = action.payload
-  //   },
-
-  // },
+  reducers: {
+    setloading:(state,action)=>{
+      state.isloading = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
@@ -52,6 +50,7 @@ const userDetailSlice = createSlice({
       builder.addCase(getUser.rejected, (state, action) => {
         state.isloading = false;
         state.error = action.error.message;
+       
       });
   },
 });

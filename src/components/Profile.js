@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../features/FetchapiSlice';
+
 
 export default function Profile() {
   const userData = useSelector((state) => state.app.users);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUser());
-  }, );
+
 
   return (
     <div className="bg-gray-200 rounded-lg shadow-md p-6 m-5 w-64">

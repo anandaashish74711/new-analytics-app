@@ -2,6 +2,7 @@ import React from 'react';
 import Profile from './Profile';
 import BioGraph from './BioGraph';
 import ComorbiditiesCard from './combodities'// Corrected the import statement
+import Footer from './Footer';
 
 export default function Body() {
   return (
@@ -20,6 +21,7 @@ export default function Body() {
             <ComorbiditiesCard />
           </div>
         </div>
+        <Footer/>
       </div>
     </div>
   );
