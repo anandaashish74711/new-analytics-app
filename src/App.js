@@ -10,11 +10,10 @@ function App() {
 const dispatch = useDispatch()
   useEffect(()=>{
     dispatch(getUser())
-    console.log('fetch')
   },[])
   return (
-    <div className="App mx-4 bg-white"> {/* Add bg-white class */}
-      <header className="App-top-layout mb-4">
+    <div className="App  bg-white"> {/* Add bg-white class */}
+      <header className="App-top-layout ">
         <Header />
         <Body />
         <Footer />

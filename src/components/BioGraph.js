@@ -119,7 +119,7 @@ function BioGraph() {
     return <h1>Loading</h1>;
   } else {
     return (
-      <div className="bg-gray-200 min-h-screen p-4 rounded-sm">
+      <div className="bg-gray-200 min-h-screen p-4 my-4 rounded-lg">
         <h2 className="text-2xl font-bold mb-4">BioGraph</h2>
         <div className="mb-4">
           <label htmlFor="minFrequency" className="mr-2">
