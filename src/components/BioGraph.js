@@ -31,8 +31,9 @@ function BioGraph() {
     if (!users.visit && !loading) {
       console.log('Dispatching getUser...');
       dispatch(getUser());
+      console.log('Dispatch complete')
     }
-  }, [users, loading, dispatch]);
+  }, []);
 
   const [frequencyFilter, setFrequencyFilter] = useState({ min: 0, max: 100 });
   const [visualizationType, setVisualizationType] = useState('bioImpedance');
@@ -40,13 +41,8 @@ function BioGraph() {
   const applyFrequencyFilter = (users, frequencyFilter) => {
     const { min, max } = frequencyFilter;
 
-    console.log(users.visit.MedicalData);
-
     return users.visit.flatMap((visit) =>
-      visit.MedicalData.filter((item) => {
-        console.log('Item Frequency:', item.frequency);
-        return item.frequency >= min && item.frequency <= max;
-      })
+      visit.MedicalData.filter((item) => item.frequency >= min && item.frequency <= max)
     );
   };
 
@@ -96,14 +92,13 @@ function BioGraph() {
 
   const options = {
     type: 'line',
-    
     options: {
       plugins: {
         title: {
           text: 'Chart.js Time Scale',
           display: true,
           responsive: true,
-    maintainAspectRatio: false
+          maintainAspectRatio: false
         },
       },
       scales: {
@@ -129,28 +124,39 @@ function BioGraph() {
   };
 
   return (
-    <div>
-      <h2>BioGraph</h2>
-      <div>
-        <label htmlFor="minFrequency">Min Frequency:</label>
+    <div className="bg-gray-200 min-h-screen p-4 rounded-sm">
+      <h2 className="text-2xl font-bold mb-4">BioGraph</h2>
+      <div className="mb-4">
+        <label htmlFor="minFrequency" className="mr-2">
+          Min Frequency:
+        </label>
         <input
           type="number"
           id="minFrequency"
           value={frequencyFilter.min}
           onChange={(e) => handleFrequencyChange(e, 'min')}
+          className="border p-2"
         />
-        <label htmlFor="maxFrequency">Max Frequency:</label>
+        <label htmlFor="maxFrequency" className="ml-4 mr-2">
+          Max Frequency:
+        </label>
         <input
           type="number"
           id="maxFrequency"
           value={frequencyFilter.max}
           onChange={(e) => handleFrequencyChange(e, 'max')}
+          className="border p-2"
         />
       </div>
-      <button onClick={toggleVisualizationType}>
+      <button
+        onClick={toggleVisualizationType}
+        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+      >
         Toggle Visualization Type ({visualizationType === 'bioImpedance' ? 'Phase Angle' : 'Bioimpedance'})
       </button>
-      <Line data={getChartData()} options={options} />
+      <div className="mt-4">
+        <Line data={getChartData()} options={options} />
+      </div>
     </div>
   );
 }

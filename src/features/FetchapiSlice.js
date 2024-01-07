@@ -34,23 +34,23 @@ const userDetailSlice = createSlice({
     users: DATA,
     isloading: false,
   },
-  reducers: {
-    setloading:(state,action)=>{
-      state.isloading = action.payload
-    },
+  // reducers: {
+  //   setloading:(state,action)=>{
+  //     state.isloading = action.payload
+  //   },
 
-  },
+  // },
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
-        state.loading = true;
+        state.isloading = true;
       })
-      .addCase(getUser.fulfilled, (state, action) => {
-        state.loading = false;
+      builder.addCase(getUser.fulfilled, (state, action) => {
+        state.isloading = false;
         state.users = action.payload;
       })
-      .addCase(getUser.rejected, (state, action) => {
-        state.loading = false;
+      builder.addCase(getUser.rejected, (state, action) => {
+        state.isloading = false;
         state.error = action.error.message;
       });
   },
