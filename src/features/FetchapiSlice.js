@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // Assuming you have a URL for your API endpoint
-const apiUrl = "http://localhost:4000/api/v1//patientinfo/6564c248b30f32776ed6270a";
+const apiUrl = "http://localhost:4000/api/v1//patientinfo/659d3da859a99be651d75836";
 
 // Create an asynchronous thunk for getting user data
 export const getUser = createAsyncThunk("getUser", async () => {

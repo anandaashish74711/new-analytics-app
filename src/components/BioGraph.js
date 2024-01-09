@@ -25,11 +25,11 @@ function sampleArray(array, sampleSize) {
 function BioGraph() {
   const { users } = useSelector((state) => state.app);
 
-  const [frequencyFilter, setFrequencyFilter] = useState({ targetFrequency: 0 });
+  const [frequencyFilter, setFrequencyFilter] = useState({ targetFrequency: 90 });
   const [visualizationType, setVisualizationType] = useState('bioImpedance');
   const [filteredMedicalData, setFilteredMedicalData] = useState([]);
   const [values, setValues] = useState([]);
-  const [sampleSize, setSampleSize] = useState(50);
+  const [sampleSize, setSampleSize] = useState(200);
   const [selectedVisitIndex, setSelectedVisitIndex] = useState(0);
   const [Bio, setBio] = useState('Phase Angle');
   const [postGeneratorFilter, setPostGeneratorFilter] = useState(null);
@@ -56,7 +56,7 @@ function BioGraph() {
   };
 
   const handleFrequencyChange = (event) => {
-    const value = parseFloat(event.target.value);
+    const value = parseInt(event.target.value, 10);
     setFrequencyFilter({ targetFrequency: value });
   };
 
@@ -66,12 +66,12 @@ function BioGraph() {
   };
 
   const handlePostGeneratorChange = (event) => {
-    const value = parseFloat(event.target.value);
+    const value = parseInt(event.target.value, 10);
     setPostGeneratorFilter(value);
   };
 
   const handlePostSensorChange = (event) => {
-    const value = parseFloat(event.target.value);
+    const value = parseInt(event.target.value, 10);
     setPostSensorFilter(value);
   };
 
@@ -85,7 +85,7 @@ function BioGraph() {
 
     const timestamps = sampleArray(users.visit[selectedVisitIndex]?.MedicalData.map((medicalData) => medicalData.timestamp) || [], sampleSize)
       .sort((a, b) => new Date(a) - new Date(b));
-
+ const yAxisLabel = Bio === 'BioImpedance' ? 'Bioimpedance' : 'Phase Angle';
     return {
       labels: timestamps,
       datasets: [
@@ -101,38 +101,40 @@ function BioGraph() {
     };
   };
 
-  const options = {
-    type: 'line',
-    options: {
-      plugins: {
-        title: {
-          text: 'Chart.js Time Scale',
-          display: true,
-          responsive: true,
-          maintainAspectRatio: false,
-        },
+  
+const options = {
+  type: 'line',
+  options: {
+    plugins: {
+      title: {
+        text: 'Chart.js Time Scale',
+        display: true,
+        responsive: true,
+        maintainAspectRatio: false,
       },
-      scales: {
-        x: {
-          type: 'time',
-          time: {
-            tooltipFormat: 'DD T',
-          },
-          title: {
-            display: true,
-            text: 'Date',
-          },
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Value',
-          },
-        },
-      },
-      responsive: true,
     },
-  };
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          tooltipFormat: 'DD T',
+        },
+        title: {
+          display: true,
+          text: 'Date',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: <h2 className="text-2xl font-bold mb-4">{Bio}</h2>,
+        },
+      },
+    },
+    responsive: true,
+  },
+};
+  
 
   if (!users) {
     return <h1>loading</h1>;
@@ -141,44 +143,59 @@ function BioGraph() {
       <div className="bg-gray-200 min-h-screen p-4 my-4 rounded-lg">
         <h2 className="text-2xl font-bold mb-4">{Bio}</h2>
         <button onClick={toggleVisualizationType} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-          Toggle Visualization Type ({Bio === 'BioImpedance' ? 'Phase Angle' : 'BioImpedance'})
+          Toggle ({Bio === 'BioImpedance' ? 'Phase Angle' : 'BioImpedance'})
         </button>
         <div className="flex flex-wrap mb-4">
           <div className="flex items-center mb-2 mr-4">
             <label htmlFor="targetFrequency" className="mr-2">
               Target Frequency:
             </label>
-            <input
-              type="number"
+            <select
               id="targetFrequency"
               value={frequencyFilter.targetFrequency}
               onChange={handleFrequencyChange}
               className="border p-2"
-            />
+            >
+              {Array.from({ length: 21 }, (_, index) => 90 + index).map((frequency) => (
+                <option key={frequency} value={frequency}>
+                  {frequency}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex items-center mb-2 mr-4">
             <label htmlFor="postGenerator" className="mr-2">
               Post Generator:
             </label>
-            <input
-              type="number"
+            <select
               id="postGenerator"
               value={postGeneratorFilter || ''}
               onChange={handlePostGeneratorChange}
               className="border p-2"
-            />
+            >
+              {Array.from({ length: 5 }, (_, index) => index + 1).map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex items-center mb-2">
             <label htmlFor="postSensor" className="mr-2">
               Post Sensor:
             </label>
-            <input
-              type="number"
+            <select
               id="postSensor"
               value={postSensorFilter || ''}
               onChange={handlePostSensorChange}
               className="border p-2"
-            />
+            >
+              {Array.from({ length: 5 }, (_, index) => index + 1).map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
           </div>
           {users.visit[selectedVisitIndex] && (
             <div className="flex items-center mb-2">
