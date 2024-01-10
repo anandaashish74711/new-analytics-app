@@ -84,8 +84,7 @@ function BioGraph() {
     const dataKey = visualizationType === 'bioImpedance' ? 'bioImpedance' : 'phaseAngle';
 
     const timestamps = sampleArray(users.visit[selectedVisitIndex]?.MedicalData.map((medicalData) => medicalData.timestamp) || [], sampleSize)
-      .sort((a, b) => new Date(a) - new Date(b));
- const yAxisLabel = Bio === 'BioImpedance' ? 'Bioimpedance' : 'Phase Angle';
+
     return {
       labels: timestamps,
       datasets: [
@@ -127,7 +126,7 @@ const options = {
       y: {
         title: {
           display: true,
-          text: <h2 className="text-2xl font-bold mb-4">{Bio}</h2>,
+          text:Date,
         },
       },
     },
@@ -142,9 +141,13 @@ const options = {
     return (
       <div className="bg-gray-200 min-h-screen p-4 my-4 rounded-lg">
         <h2 className="text-2xl font-bold mb-4">{Bio}</h2>
-        <button onClick={toggleVisualizationType} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-          Toggle ({Bio === 'BioImpedance' ? 'Phase Angle' : 'BioImpedance'})
-        </button>
+        <button
+  onClick={toggleVisualizationType}
+  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+>
+  Toggle ({Bio === 'BioImpedance' ? 'Phase Angle' : 'BioImpedance'})
+</button>
+
         <div className="flex flex-wrap mb-4">
           <div className="flex items-center mb-2 mr-4">
             <label htmlFor="targetFrequency" className="mr-2">
@@ -173,7 +176,7 @@ const options = {
               onChange={handlePostGeneratorChange}
               className="border p-2"
             >
-              {Array.from({ length: 5 }, (_, index) => index + 1).map((value) => (
+              {Array.from({ length: 6 }, (_, index) => index ).map((value) => (
                 <option key={value} value={value}>
                   {value}
                 </option>
@@ -190,7 +193,7 @@ const options = {
               onChange={handlePostSensorChange}
               className="border p-2"
             >
-              {Array.from({ length: 5 }, (_, index) => index + 1).map((value) => (
+              {Array.from({ length: 6 }, (_, index) => index ).map((value) => (
                 <option key={value} value={value}>
                   {value}
                 </option>
