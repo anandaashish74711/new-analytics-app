@@ -200,23 +200,27 @@ const options = {
               ))}
             </select>
           </div>
-          {users.visit[selectedVisitIndex] && (
-            <div className="flex items-center mb-2">
-              <label htmlFor="visitIndex" className="mr-2">
-                Visit:
-              </label>
-              <input
-                type="number"
-                id="visitIndex"
-                value={selectedVisitIndex}
-                onChange={handleVisitIndexChange}
-                className="border p-2"
-              />
-              <span className="ml-2 text-gray-500">
-                Visit Date: {new Date(users.visit[selectedVisitIndex].visitDate).toLocaleDateString()}
-              </span>
-            </div>
-          )}
+
+          <div className="flex items-center mb-2">
+  <label htmlFor="visitIndex" className="mr-2">
+    Visit:
+  </label>
+  <input
+    type="number"
+    id="visitIndex"
+    value={selectedVisitIndex}
+    onChange={handleVisitIndexChange}
+    className="border p-2"
+  />
+  {users.visit[selectedVisitIndex] ? (
+    <span className="ml-2 text-gray-500">
+      Visit Date: {new Date(users.visit[selectedVisitIndex].visitDate).toLocaleDateString()}
+    </span>
+  ) : (
+    <span className="ml-2 text-gray-500">Default Visit Date</span>
+  )}
+</div>
+
         </div>
         <div className="mt-4">
           <Line data={getChartData()} options={options} />
