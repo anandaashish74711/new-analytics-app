@@ -82,8 +82,13 @@ function BioGraph() {
 
   const getChartData = () => {
     const dataKey = visualizationType === 'bioImpedance' ? 'bioImpedance' : 'phaseAngle';
-
-    const timestamps = sampleArray(users.visit[selectedVisitIndex]?.MedicalData.map((medicalData) => medicalData.timestamp) || [], sampleSize)
+    const timestamps = sampleArray(
+      users.visit[selectedVisitIndex]?.MedicalData.map((medicalData) => {
+        const date = new Date(medicalData.timestamp);
+        return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+      }) || [],
+      sampleSize
+    );
 
     return {
       labels: timestamps,
@@ -143,9 +148,9 @@ const options = {
         <h2 className="text-2xl font-bold mb-4">{Bio}</h2>
         <button
   onClick={toggleVisualizationType}
-  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+  className="bg-blue-500 text-white py-2 m-2 px-4 rounded hover:bg-blue-700 transition duration-300"
 >
-  Toggle ({Bio === 'BioImpedance' ? 'Phase Angle' : 'BioImpedance'})
+  ({Bio === 'BioImpedance' ? 'Phase Angle' : 'BioImpedance'})
 </button>
 
         <div className="flex flex-wrap mb-4">

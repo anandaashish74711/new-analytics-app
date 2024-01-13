@@ -4,7 +4,7 @@ const Shimmer = () => {
   return (
     <div className="Restaurant-list flex-wrap">
       <div className="flex flex-wrap">
-        {Array(16)
+        {Array(3)
           .fill('')
           .map((_, index) => (
             <div key={index} className="shimmer md:w-1/4 w-1/2">
