@@ -1,18 +1,20 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {store} from './app/store'
-// Create a root for concurrent rendering
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import  store  from './app/store';
+import App from './App';
 
-// Render the App component within the root
-root.render(
+
+
+const root = document.getElementById('root');
+
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <Provider store={store}>
-    <App />
-    </Provider>,
+      <Router>
+        <App />
+      </Router>
+    </Provider>
   </React.StrictMode>
- 
 );

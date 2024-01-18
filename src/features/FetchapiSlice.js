@@ -1,10 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 
-// Assuming you have a URL for your API endpoint
-const apiUrl = "http://localhost:4000/api/v1//patientinfo/659d3da859a99be651d75836";
+
 
 // Create an asynchronous thunk for getting user data
-export const getUser = createAsyncThunk("getUser", async () => {
+export const getUser = createAsyncThunk("getUser", async ({auth}) => {
+  console.log(auth);
+  const userID = auth._id;
+
+  const apiUrl = `http://localhost:4000/api/v1/patientinfo/${userID}`;
+  
   try {
     // Make the API call using fetch
     const response = await fetch(apiUrl);
@@ -21,8 +26,7 @@ export const getUser = createAsyncThunk("getUser", async () => {
     return result;
   } catch (error) {
     console.error("Error fetching user data:", error);
-    // You can throw an error or return an object indicating an error state
-    throw error;
+    // You can throw an error or return an object indicating an error stat
   }
 });
 
@@ -42,10 +46,12 @@ const userDetailSlice = createSlice({
     builder
       .addCase(getUser.pending, (state) => {
         state.isloading = true;
+        
       })
       builder.addCase(getUser.fulfilled, (state, action) => {
         state.isloading = false;
         state.users = action.payload;
+        console.log('Received user data:', action.payload);
       })
       builder.addCase(getUser.rejected, (state, action) => {
         state.isloading = false;

@@ -1,8 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
-import userDetailReducer from "../features/FetchapiSlice"; // Correct import name
+import userDetailReducer from "../features/FetchapiSlice"; 
+import { configureStore } from '@reduxjs/toolkit';
+import authReducer from '../features/authSlice';
+import { loginUser } from '../features/authThunk';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
-    app: userDetailReducer, // Correct reference to the reducer
+    app: userDetailReducer,
+    auth: authReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: { extraArgument: { loginUser } },
+    }),
 });
+
+export default store;
