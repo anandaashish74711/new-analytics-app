@@ -8,6 +8,7 @@ import { Outlet } from 'react-router-dom';
 
 function Layout() {
   const auth = useSelector((state) => state.auth.user);
+  console.log(auth)
   const isLoggedIn = auth !== null; // Check if the user is logged in based on user information
 
   return (

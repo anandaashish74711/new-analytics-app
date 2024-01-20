@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { Routes, Route, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Routes, Route, useNavigate } from 'react-router-dom'; 
 import Layout from './Layout';
 import Login from './Login/Login';
 import Body from './components/Body';
