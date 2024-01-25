@@ -10,7 +10,7 @@ import './index.css';
 function App() {
   
   const auth = useSelector((state) => state.auth.user);
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const navigate = useNavigate(); 
 
 
   const userID = auth ? auth._id : null;
@@ -20,7 +20,7 @@ function App() {
     if (auth) {
       navigate(`/userinfo/${userID}`);
     }
-  }, [ userID, navigate]);
+  }, [ userID,navigate]);
 
   return (
     <Routes>

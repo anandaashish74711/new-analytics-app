@@ -1,5 +1,22 @@
 // authSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, { dispatch }) => {
+  try {
+    const response = await axios.post('http://localhost:4000/api/v1/login', credentials);
+    dispatch(authSlice.actions.setUser(response.data));
+    console.log(response.data);
+  } catch (error) {
+    if (error.response) {
+      console.error('Server error response:', error.response.data);
+      dispatch(authSlice.actions.setError(error.response.data.message || 'An error occurred'));
+    } else {
+      console.error('Unexpected error:', error);
+      dispatch(authSlice.actions.setError('An unexpected error occurred'));
+    }
+  }
+});
 
 const authSlice = createSlice({
   name: 'auth',
@@ -9,13 +26,12 @@ const authSlice = createSlice({
   },
   reducers: {
     setUser: (state, action) => {
-      // Ensure that action.payload is defined and contains 'user' and 'token' properties
-      state.user = action.payload.user;
+      state.user = action.payload;
       state.token = action.payload.token;
       state.error = null;
     },
     setError: (state, action) => {
-      state.error = action.payload; // Ensure that action.payload is defined
+      state.error = action.payload;
     },
     clearError: (state) => {
       state.error = null;

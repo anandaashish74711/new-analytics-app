@@ -1,66 +1,60 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
+// Define a helper function to get the userID
+const getUserId = (state) => state.auth._id;
 
+export const getUser = createAsyncThunk("getUser", async (_, { getState }) => {
+  // Get the userID from the Redux store using the helper function
+  const userID = getUserId(getState());
+  console.log(userID)
 
-// Create an asynchronous thunk for getting user data
-export const getUser = createAsyncThunk("getUser", async ({auth}) => {
-  console.log(auth);
-  const userID = auth._id;
+  const apiUrl = `http://localhost:4000/api/v1/userinfo/${userID}`;
 
-  const apiUrl = `http://localhost:4000/api/v1/patientinfo/${userID}`;
-  
   try {
-    // Make the API call using fetch
     const response = await fetch(apiUrl);
 
-    // Check if the response is successful (status code 200-299)
     if (!response.ok) {
-      throw new Error(`HTT uP error! Status: ${response.status}`);
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    // Parse the response JSON
     const result = await response.json();
-
-    // Return the result, which will be accessible in the Redux store
     return result;
   } catch (error) {
     console.error("Error fetching user data:", error);
-    // You can throw an error or return an object indicating an error stat
+    throw error; // Throw the error to indicate a failure
   }
 });
 
-// Create userDetail slice
 const userDetailSlice = createSlice({
   name: "userDetail",
   initialState: {
-    users:null,
+    users: null,
     isloading: false,
+    error: null,
   },
   reducers: {
-    setloading:(state,action)=>{
-      state.isloading = action.payload
+    setloading: (state, action) => {
+      state.isloading = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
         state.isloading = true;
-        
       })
-      builder.addCase(getUser.fulfilled, (state, action) => {
+      .addCase(getUser.fulfilled, (state, action) => {
         state.isloading = false;
         state.users = action.payload;
-        console.log('Received user data:', action.payload);
+        console.log("Received user data:", action.payload);
       })
-      builder.addCase(getUser.rejected, (state, action) => {
+      .addCase(getUser.rejected, (state, action) => {
         state.isloading = false;
         state.error = action.error.message;
-       
       });
   },
 });
 
-export const {setloading} = userDetailSlice.actions
+export const { setloading } = userDetailSlice.actions;
 
 export default userDetailSlice.reducer;

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../features/authThunk';
-import { clearError } from '../features/authSlice';
-import { Navigate} from "react-router-dom";
+
+import {  loginUser,clearError } from '../features/authSlice';
+
 
 
 function Login() {
   const dispatch = useDispatch();
   const authError = useSelector((state) => state.auth.error);
+ 
+ 
    
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
