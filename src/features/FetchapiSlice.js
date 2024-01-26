@@ -1,15 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
-// Define a helper function to get the userID
-const getUserId = (state) => state.auth._id;
 
-export const getUser = createAsyncThunk("getUser", async (_, { getState }) => {
-  // Get the userID from the Redux store using the helper function
-  const userID = getUserId(getState());
-  console.log(userID)
-
-  const apiUrl = `http://localhost:4000/api/v1/userinfo/${userID}`;
+export const getUser = createAsyncThunk("getUser", async (userID) => {
+  console.log(`AuthInSlice${userID}`)
+  
+  const apiUrl = `http://localhost:4000/api/v1/patientInfo/${userID}`;
 
   try {
     const response = await fetch(apiUrl);

@@ -13,14 +13,13 @@ function Layout() {
 
   return (
     <>
-      {!isLoggedIn && <Login />}
-      {isLoggedIn && (
+     
         <>
           <Header />
           <Outlet />
           <Footer />
         </>
-      )}
+      )
     </>
   );
 }

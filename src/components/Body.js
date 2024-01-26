@@ -8,11 +8,14 @@ import { getUser } from '../features/FetchapiSlice';
 
 export default function Body() {
   const auth = useSelector((state) => state.auth.user);
+  const userID = auth._id;
+  console.log(userID);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser({ auth }));
+    console.log(auth);
+    dispatch(getUser( userID ));
   }, [dispatch, auth]);
 
 
