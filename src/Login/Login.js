@@ -1,31 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import {  loginUser,clearError } from '../features/authSlice';
-
-
+import { loginUser, clearError } from '../features/authSlice';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Get the navigate function
+
   const authError = useSelector((state) => state.auth.error);
- 
- 
-   
+  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-       const user = await dispatch(loginUser({ email, password, role }));
+      const user = await dispatch(loginUser({ email, password, role }));
+
+      // Check if the login was successful before navigating
+      if (user) {
+        // Assuming your user object has a userID property
+        const userID = user.userID;
+
+        // Navigate to the '/userinfo/:userID' route
+        navigate(`/userinfo/${userID}`);
+      }
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
-  
 
   useEffect(() => {
     dispatch(clearError());
