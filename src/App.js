@@ -3,7 +3,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom'; 
 import Layout from './Layout';
 import Login from './Login/Login';
-import Body from './components/Body';
+import Body from './components/PatientBody/Body';
 import './index.css';
 
 function App() {

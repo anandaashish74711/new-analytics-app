@@ -3,8 +3,8 @@ import { useDispatch ,useSelector} from 'react-redux';
 import Profile from './Profile';
 import BioGraph from './BioGraph';
 import ComorbiditiesCard from './combodities' // Ensure the correct import path
+import { getUser } from '../../features/FetchapiSlice';
 
-import { getUser } from '../features/FetchapiSlice';
 
 export default function Body() {
   const auth = useSelector((state) => state.auth.user);
