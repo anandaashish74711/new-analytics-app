@@ -3,7 +3,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 export const getUser = createAsyncThunk("getUser", async (userID) => {
-  console.log(`AuthInSlice${userID}`)
   
   const apiUrl = `http://localhost:4000/api/v1/patientInfo/${userID}`;
 
