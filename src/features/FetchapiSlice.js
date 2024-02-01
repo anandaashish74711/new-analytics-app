@@ -2,9 +2,22 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 
-export const getUser = createAsyncThunk("getUser", async (userID) => {
+export const getUser = createAsyncThunk("getUser", async ({userID,role}) => {
   
-  const apiUrl = `http://localhost:4000/api/v1/patientInfo/${userID}`;
+  let apiUrl;
+
+  switch (role) {
+    case "Patient":
+      apiUrl = `http://localhost:4000/api/v1/patientInfo/${userID}`;
+      break;
+    case "Nurse":
+      apiUrl = `http://localhost:4000/api/v1/nurse/${userID}`;
+      break;
+    
+
+    default:
+      throw new Error("Invalid role");
+  }
 
   try {
     const response = await fetch(apiUrl);

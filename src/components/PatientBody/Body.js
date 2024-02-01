@@ -2,18 +2,19 @@ import React, { useEffect } from 'react';
 import { useDispatch ,useSelector} from 'react-redux';
 import Profile from './Profile';
 import BioGraph from './BioGraph';
-import ComorbiditiesCard from './combodities' // Ensure the correct import path
+import ComorbiditiesCard from './combodities' ;
 import { getUser } from '../../features/FetchapiSlice';
 
 
 export default function Body() {
   const auth = useSelector((state) => state.auth.user);
   const userID = auth._id;
+  const role=auth.role;
   const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(auth);
-    dispatch(getUser( userID ));
+    dispatch(getUser( {userID ,role}));
   }, [dispatch, auth]);
 
 
