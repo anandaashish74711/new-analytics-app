@@ -19,12 +19,12 @@ export default function NurseBody() {
                   <p className="text-gray-700 text-sm mb-2">Email:</p>
                   <p className="text-primary text-lg font-medium">{userData.email}</p>
                 </div>
-                {/* Add more profile information here if needed */}
+               
               </div>
             </div>
           )}
         </div>
-
+        </div>
         {userData && (
           <div className="p-4 m-5 flex-1">
             <h2 className="text-primary text-lg font-medium mb-4">Patient List</h2>
@@ -38,6 +38,6 @@ export default function NurseBody() {
           </div>
         )}
       </div>
-    </div>
+   
   );
 }

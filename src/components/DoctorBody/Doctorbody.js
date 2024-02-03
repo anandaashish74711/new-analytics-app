@@ -42,6 +42,7 @@ export default function DoctorBody() {
             </div>
           </div>
         </div>
+        </div>
         <div className="p-4 m-5 flex-1">
           <h2 className="text-primary text-lg font-medium mb-4">Nurse List</h2>
           {userData.nurses &&
@@ -76,6 +77,6 @@ export default function DoctorBody() {
             ))}
         </div>
       </div>
-    </div>
+    
   );
 }
