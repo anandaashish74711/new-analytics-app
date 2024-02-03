@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUser, setloading } from '../../features/FetchapiSlice'; 
+import { useState } from 'react';
 
 export default function DoctorBody() {
+  const [searchInput, setSearchInput] = useState('');
+  const [filteredNurses, setFilteredNurses] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState([]);
+
   const userData = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
   console.log(userData);
+
+  useEffect(() => {
+    handleSearch(); // Call handleSearch initially to display all records
+  }, [userData]); // Trigger the effect whenever userData changes
 
   const handleFetchData = async (userID, role) => {
     dispatch(setloading(true)); 
@@ -20,40 +29,82 @@ export default function DoctorBody() {
     }
   };
 
+  const handleSearch = () => {
+    const filterNurses = userData.nurses.filter(
+      (nurse) =>
+        nurse.nurseName.toLowerCase().includes(searchInput.toLowerCase()) ||
+        nurse.nurseId.includes(searchInput)
+    );
+
+    const filterPatients = userData.patients.filter(
+      (patient) =>
+        patient.patientName.toLowerCase().includes(searchInput.toLowerCase()) ||
+        patient.patientId.includes(searchInput) ||
+        patient.nurseName.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
+    setFilteredNurses(filterNurses);
+    setFilteredPatients(filterPatients);
+  };
+
   if (!userData) {
-  
     return <p>Loading...</p>;
   }
 
+  // Calculate the number of records for nurses and patients
+  const totalNurses = userData.nurses.length;
+  const totalPatients = userData.patients.length;
+
   return (
-    <div style={{ backgroundColor: '#001f3f', color: '#fff', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#fff', color: '#008000', minHeight: '100vh' }}>
       <div className="flex flex-col md:flex-row">
-        <div className="bg-gray-200 rounded-lg shadow-md p-4 m-5 w-64">
-          <div className="flex flex-col items-center">
-       
-            <div className="bg-gray-300 w-20 h-20 rounded-full mb-4"></div>
-            <p className="text-primary text-lg font-medium mb-2">{userData.name}</p>
-            <div className="grid grid-cols-2 gap-2 w-full">
-              <div>
-                <p className="text-gray-700 text-sm mb-2">Email:</p>
-                <p className="text-primary text-lg font-medium">{userData.email}</p>
-              </div>
-             
+      <div className="bg-light-blue-200 rounded-lg shadow-md p-4 m-5 w-80 h-96">
+  <div className="flex flex-col items-center h-full">
+    <div className="bg-gray-300 w-20 h-20 rounded-full mb-4"></div>
+    <p className="text-primary text-lg font-medium mb-2">{userData.name}</p>
+    <div className="grid grid-cols-2 gap-2 w-full">
+      <div>
+        <p className="text-gray-700 text-sm mb-2">Email:</p>
+        <p className="text-primary text-lg font-medium">{userData.email}</p>
+      </div>
+    </div>
+  </div>
+</div>
+        <div className="p-4 m-5 flex-1">
+          <div className="flex justify-between mb-4">
+            
+            <div className="bg-blue-200 p-2 rounded-lg">
+              Total Nurses: {totalNurses}
+            </div>
+            <div className="bg-yellow-200 p-2 rounded-lg">
+              Total Patients: {totalPatients}
+            </div>
+            {/* Search input and button */}
+            <div className="flex items-center">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="border-2 border-gray-300 rounded-l-md px-2 py-1 focus:outline-none"
+              />
+              <button onClick={handleSearch} className="bg-blue-500 text-white p-2 rounded-r-md">
+                Search
+              </button>
             </div>
           </div>
-        </div>
-        </div>
-        <div className="p-4 m-5 flex-1">
+
           <h2 className="text-primary text-lg font-medium mb-4">Nurse List</h2>
           {userData.nurses &&
-            userData.nurses.map((nurse) => (
-              <div key={nurse._id} className="p-2 m-2 border rounded-lg flex items-center justify-between">
-                <p className="text-primary text-lg font-medium">
-                  {nurse.nurseName} - Nurse ID: <span className="ml-2">{nurse.nurseId}</span>
+            userData.nurses.map((nurse, index) => (
+              <div key={nurse._id} className={`p-2 m-2 border rounded-lg flex items-center justify-between cursor-pointer hover:bg-light-green-600 transition-all duration-200 ease-in-out`}>
+               <p className="text-primary text-sm font-medium">
+              {nurse.nurseName} <span className="ml-14">{nurse.nurseId}</span>
                 </p>
+
                 <button
                   onClick={() => handleFetchData(nurse.nurseId, 'Nurse')}
-                  className="bg-blue-500 text-white p-2 rounded-md"
+                  className="bg-green-500 text-white p-2 rounded-md"
                 >
                   Fetch Data
                 </button>
@@ -61,15 +112,16 @@ export default function DoctorBody() {
             ))}
           <h2 className="text-primary text-lg font-medium mb-4">Patient List</h2>
           {userData.patients &&
-            userData.patients.map((patient) => (
-              <div key={patient._id} className="p-2 m-2 border rounded-lg flex items-center justify-between">
-                <p className="text-primary text-lg font-medium">
-                  {patient.patientName} - Patient ID: <span className="ml-2">{patient.patientId}</span>
-                  <span className="ml-2">{patient.nurseName}</span>
-                </p>
+            userData.patients.map((patient, index) => (
+              <div key={patient._id} className={`p-2 m-2 border rounded-lg flex items-center justify-between cursor-pointer hover:bg-light-green-200 transition-all duration-200 ease-in-out`}>
+                  <p className="text-primary text-sm font-medium">
+    {patient.patientName}
+    <span className="ml-12">{patient.patientId}</span>
+    <span className="ml-12">{patient.nurseName}</span>
+  </p>
                 <button
                   onClick={() => handleFetchData(patient.patientId, 'Patient')}
-                  className="bg-blue-500 text-white p-2 rounded-md"
+                  className="bg-green-500 text-white p-2 rounded-md"
                 >
                   Fetch Data
                 </button>
@@ -77,6 +129,6 @@ export default function DoctorBody() {
             ))}
         </div>
       </div>
-    
+    </div>
   );
 }
