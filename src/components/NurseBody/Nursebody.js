@@ -1,12 +1,13 @@
-// Profile.js
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+
+
 
 export default function NurseBody() {
   const userData = useSelector((state) => state.auth.user);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date()); // State to store selected date
 
-  // Function to filter patients based on the search term
   const filteredPatients = userData?.patients.filter(
     (patient) =>
       patient.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -16,65 +17,47 @@ export default function NurseBody() {
   const totalPatients = userData?.patients.length || 0;
 
   return (
-    <div style={{ backgroundColor: '#fff', color: '#008000', minHeight: '100vh' }}>
-      <div className="flex flex-col md:flex-row">
-        <div className="bg-blue-200 rounded-lg shadow-md p-4 m-5 w-1/4"> {/* Fixed width for the profile column */}
-          {userData && (
-            <div className="flex flex-col items-center">
-              {/* Placeholder for profile photo */}
-              <div className="bg-gray-300 w-32 h-32 rounded-full mb-4"></div>
-              <p className="text-primary text-xl font-medium mb-2">{userData.name}</p>
-              <div className="grid grid-cols-1 gap-2 w-full">
-                <div>
-                  <p className="text-gray-700 text-sm mb-2">Email:</p>
-                  <p className="text-primary text-lg font-medium">{userData.email}</p>
-                </div>
-              </div>
-            </div>
-          )}
+    <div className="flex flex-col ml-5 my-8 h-screen ">
+      <div className="bg-yellow-300 p-10 w-48 h-40 rounded-lg mb-4">
+        <p className="text-primary text-lg font-medium">
+          Total Patients: <span className="ml-2">{totalPatients}</span>
+        </p>
+      </div>
+      
+
+      <div className="p-4 m-5 border rounded-lg bg-white">
+        <div className="mb-4 flex items-center justify-end">
+          <input
+            type="text"
+            placeholder="Search patients"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-2 border rounded-md rounded-end focus:outline-none focus:ring focus:border-blue-300"
+          />
+          <button
+            onClick={() => {
+              
+            }}
+            className="bg-blue-500 rounded-md h-11 w-16 transition hover:bg-blue-600 ml-2"
+          >
+            <h1 className="text-center text-white">Search</h1>
+          </button>
         </div>
-        </div>
-         {/* Box for displaying total number of patients */}
-         <div className="bg-yellow-300 p-8 w-40 h-30 rounded-lg ">
-            <p className="text-primary text-lg font-medium">
-              Total Patients: <span className="ml-2">{totalPatients}</span>
-            </p>
-          </div>
 
-        <div className="p-4 m-5 flex-1">
-          <div className="mb-4 flex items-center justify-end">
-            {/* Search bar */}
-            <input
-              type="text"
-              placeholder="Search patients"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="p-2 border rounded-md mr-2"
-            />
-            {/* Search button */}
-            <button
-              onClick={() => {
-                // Perform search logic if needed
-              }}
-              className="p-2 bg-primary text-white rounded-md"
-            >
-              Search
-            </button>
-          </div>
+        <h2 className="text-primary text-lg font-medium mb-4">Patient List</h2>
 
-          <h2 className="text-primary text-lg font-medium mb-4">Patient List</h2>
-
-        
-
+        <div className="flex flex-wrap">
           {filteredPatients.map((patient) => (
-            <div key={patient._id} className="p-2 m-2 border rounded-lg bg-white">
-              <p className="text-primary text-lg font-medium">
-                {patient.patientName} - Patient ID: <span className="ml-2">{patient.patientId}</span>
-              </p>
+            <div key={patient._id} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full">
+              <p className="text-primary text-md font-medium">{patient.patientName}</p>
             </div>
           ))}
         </div>
+
+        
       </div>
-    
+    </div>
   );
 }
+
+
