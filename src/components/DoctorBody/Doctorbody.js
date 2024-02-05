@@ -63,21 +63,28 @@ export default function DoctorBody() {
     <div className="bg-gray-300 w-20 h-20 rounded-full mb-4"></div>
     <p className="text-primary text-lg font-medium mb-2">{userData.name}</p>
     <div className="grid grid-cols-2 gap-2 w-full">
-      <div>
-        <p className="text-gray-700 text-sm mb-2">Email:</p>
-        <p className="text-primary text-lg font-medium">{userData.email}</p>
-      </div>
-    </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+  <p className="text-green-700 text-md font-medium" style={{ marginRight: '5px' }}>email:</p>
+  <p className="text-primary text-sm font-medium">{userData.email}</p>
+</div>
+
+      
   </div>
+  <div style={{ display: 'flex', alignItems: 'center' }}>   
+        <p className="text-green-700 text-lg font-medium">Hospital:</p>
+        <p className="text-primary text-sm font-medium">{userData.hospital}</p></div>
+    </div>
 </div>
         <div className="p-4 m-5 flex-1">
           <div className="flex justify-between mb-4">
             
-            <div className="bg-blue-200 p-2 rounded-lg">
-              Total Nurses: {totalNurses}
+            <div className="bg-blue-200 p-2 rounded-lg h-52 w-52">
+             <div >Nurses </div> 
+              {totalNurses}
             </div>
-            <div className="bg-yellow-200 p-2 rounded-lg">
-              Total Patients: {totalPatients}
+            <div className="bg-yellow-200 p-2 rounded-lg w-52 h-52">
+              <div>Patients</div>
+               <div>{totalPatients}</div>
             </div>
             {/* Search input and button */}
             <div className="flex items-center">
@@ -99,14 +106,14 @@ export default function DoctorBody() {
             userData.nurses.map((nurse, index) => (
               <div key={nurse._id} className={`p-2 m-2 border rounded-lg flex items-center justify-between cursor-pointer hover:bg-light-green-600 transition-all duration-200 ease-in-out`}>
                <p className="text-primary text-sm font-medium">
-              {nurse.nurseName} <span className="ml-14">{nurse.nurseId}</span>
+              {nurse.nurseName}
                 </p>
 
                 <button
                   onClick={() => handleFetchData(nurse.nurseId, 'Nurse')}
                   className="bg-green-500 text-white p-2 rounded-md"
                 >
-                  Fetch Data
+                  View
                 </button>
               </div>
             ))}
@@ -114,16 +121,15 @@ export default function DoctorBody() {
           {userData.patients &&
             userData.patients.map((patient, index) => (
               <div key={patient._id} className={`p-2 m-2 border rounded-lg flex items-center justify-between cursor-pointer hover:bg-light-green-200 transition-all duration-200 ease-in-out`}>
-                  <p className="text-primary text-sm font-medium">
-    {patient.patientName}
-    <span className="ml-12">{patient.patientId}</span>
-    <span className="ml-12">{patient.nurseName}</span>
-  </p>
+                <p className="text-primary text-sm font-medium">
+                  {patient.patientName}   
+                  <span className="ml-2">{patient.nurseName}</span>
+                </p>
                 <button
                   onClick={() => handleFetchData(patient.patientId, 'Patient')}
                   className="bg-green-500 text-white p-2 rounded-md"
                 >
-                  Fetch Data
+                  View
                 </button>
               </div>
             ))}
