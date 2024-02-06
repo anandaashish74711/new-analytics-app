@@ -2,14 +2,14 @@ import React from 'react';
 
 const Sidebar = () => {
   return (
-    <div className="bg-blue-800 h-screen w-1/5 p-4 flex flex-col">
+    <div className="bg-blue-800 h-full fixed w-1/6  p-4 flex flex-col">
      
       <div className="text-white text-xl font-bold mb-4">
         IHUB-DATA
       </div>
 
-      {/* Navigation links */}
-      <nav className="space-y-4">
+      
+      <nav className="space-y-5 ">
         <a href="#" className="text-white hover:text-gray-300 block">Dashboard</a>
         <a href="#" className="text-white hover:text-gray-300 block">Patients</a>
         <a href="#" className="text-white hover:text-gray-300 block">Appointments</a>
@@ -17,7 +17,7 @@ const Sidebar = () => {
         <a href="#" className="text-white hover:text-gray-300 block">Settings</a>
       </nav>
 
-      {/* User-related information */}
+      
       <div className="mt-auto flex items-center space-x-4">
         <span className="text-white">Nurse Name</span>
         <img
