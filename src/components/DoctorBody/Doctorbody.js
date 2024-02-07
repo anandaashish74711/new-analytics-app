@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getUser, setloading } from '../../features/FetchapiSlice';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+
 
 export default function DoctorBody() {
   const userData = useSelector((state) => state.auth.user);
