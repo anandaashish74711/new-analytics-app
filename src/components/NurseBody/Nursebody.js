@@ -14,21 +14,21 @@ export default function NurseBody() {
 
   return (
     <div className=" h-screen py-6 pl-10 mt-4">
-<div className='grid grid-cols-3 pl-16'>
-      <div className="bg-blue-300 p-12 w-48 h-40  rounded-lg mb-4">
-        <p className="text-primary text-lg font-medium">
-          Total Patients: <span className="ml-2">{totalPatients}</span>
-        </p>
+<div className='grid grid-cols-3   ml-10 mb-10'>
+<div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
+          {totalPatients}
+          <div className="text-white text-sm ">Total Patients</div>
+        
       </div>
-      <div className="bg-blue-300 p-12 w-48 h-40  rounded-lg mb-4">
-        <p className="text-primary text-lg font-medium">
-          Total Patients: <span className="ml-2">{totalPatients}</span>
-        </p>
+      <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
+          {totalPatients}
+          <div className="text-white text-sm ">Total visits</div>
+        
       </div>
-      <div className="bg-blue-300 p-12 w-48 h-40  rounded-lg mb-4">
-        <p className="text-primary text-lg font-medium">
-          Total Patients: <span className="ml-2">{totalPatients}</span>
-        </p>
+      <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
+          {totalPatients}
+          <div className="text-white text-sm ">Total Nurses</div>
+        
       </div>
       </div>
 
@@ -52,11 +52,12 @@ export default function NurseBody() {
         </div>
 
         <h2 className="text-primary text-lg font-medium mb-4">Patient List</h2>
-
+       <div className='p-4 bg-white'></div>
         <div className="flex flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
           {filteredPatients.map((patient) => (
-            <div key={patient._id} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full">
+            <div key={patient._id} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full grid-flow-col">
               <p className="text-primary text-md font-medium">{patient.patientName}</p>
+              <p className="text-primary text-md font-medium">{patient.nurseName}</p>
             </div>
           ))}
         </div>
