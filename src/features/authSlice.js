@@ -5,6 +5,7 @@ import axios from 'axios';
 export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, { dispatch }) => {
  
   try {
+    
     const response = await axios.post('http://localhost:4000/api/v1/login', credentials);
     dispatch(authSlice.actions.setUser(response.data.user));
     console.log(response.data.user);

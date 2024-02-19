@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../features/authSlice';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Get the navigate function
-
+  const navigate = useNavigate(); 
   const authError = useSelector((state) => state.auth.error);
-  
+  const user = useSelector((state) => state.auth.user); // Access user data from the store
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,26 +15,31 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const user = await dispatch(loginUser({ email, password, role }));
-
-      // Check if the login was successful before navigating
-      if (user) {
-        // Assuming your user object has a userID property
-        const userID = user.userID;
-
-        // Navigate to the '/userinfo/:userID' route
-        navigate(`/userinfo/${userID}`);
-      }
+      await dispatch(loginUser({ email, password, role })); // Dispatch loginUser action
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
   useEffect(() => {
+   
+    
+      console.log(user);
+      if(user){
+      const { _id: userID, role: userRole } = user;
+      const url = `/${userRole}/${userID}`;
+      navigate(url);
+      }
+  }, [user]); // Re-run effect when user data or navigate function changes
+
+  useEffect(() => {
+    // Clear error when component mounts or dependencies change
     dispatch(clearError());
-  }, [dispatch, email, password, role]);
+  }, [dispatch]);
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">

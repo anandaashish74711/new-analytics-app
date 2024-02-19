@@ -7,15 +7,15 @@ import { getUser } from '../../features/FetchapiSlice';
 
 
 export default function Body() {
-  const auth = useSelector((state) => state.auth.user);
-  const userID = auth._id;
-  const role=auth.role;
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+  const userid=user._id
+  const role=user.role
+  
 
   useEffect(() => {
-    console.log(auth);
-    dispatch(getUser( {userID ,role}));
-  }, [dispatch, auth]);
+    dispatch(getUser( {userid,role}));
+  }, [dispatch]);
 
 
   return (
