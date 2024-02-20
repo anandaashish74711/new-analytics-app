@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../Layout';
+
 
 function Login() {
   const dispatch = useDispatch();
@@ -24,13 +24,17 @@ function Login() {
     }
   };
 
+ 
   useEffect(() => {
-      console.log(user);
-      if(user){
-    
-      navigate('/layout');
-      }
-  },[user]); 
+    if (user) {
+      const { _id: userID, role: userRole } = user;
+      const url = `/layout/${userRole.toLowerCase()}/${userID}`;
+      navigate(url);
+    }
+  }, [user, navigate]);
+  
+      
+  
 
   useEffect(() => {
     // Clear error when component mounts or dependencies change
