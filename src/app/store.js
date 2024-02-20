@@ -16,7 +16,7 @@ const reducer = combineReducers({
   auth: authReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, reducer); // Renamed variable
+const persistedReducer = persistReducer(persistConfig, reducer); 
 
 const store = configureStore({
   reducer: persistedReducer, 

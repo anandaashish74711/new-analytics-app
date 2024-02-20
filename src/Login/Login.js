@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
+import Layout from '../Layout';
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
   const authError = useSelector((state) => state.auth.error);
-  const user = useSelector((state) => state.auth.user); // Access user data from the store
+  const user = useSelector((state) => state.auth.user); 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,22 +18,19 @@ function Login() {
     e.preventDefault();
   
     try {
-      await dispatch(loginUser({ email, password, role })); // Dispatch loginUser action
+      await dispatch(loginUser({ email, password, role })); 
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
   useEffect(() => {
-   
-    
       console.log(user);
       if(user){
-      const { _id: userID, role: userRole } = user;
-      const url = `/${userRole}/${userID}`;
-      navigate(url);
+    
+      navigate('/layout');
       }
-  }, [user]); // Re-run effect when user data or navigate function changes
+  },[user]); 
 
   useEffect(() => {
     // Clear error when component mounts or dependencies change
