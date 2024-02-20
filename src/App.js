@@ -5,7 +5,7 @@ import Login from './Login/Login';
 import Body from './components/PatientBody/Body';
 import NurseBody from './components/NurseBody/Nursebody';
 import DoctorBody from './components/DoctorBody/Doctorbody';
-import { useSelector } from 'react-redux'; 
+import { useSelector } from 'react-redux'; // Corrected import
 import './index.css';
 
 function App() {

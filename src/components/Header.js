@@ -1,6 +1,8 @@
 import React from 'react';
+import LogoutButton from '../Logout/Logout'; // Assuming the LogoutButton component is located in the same directory
 
 const Sidebar = () => {
+  
   return (
     <div className="bg-blue-800 h-full fixed w-1/6  p-4 flex flex-col">
      
@@ -17,6 +19,8 @@ const Sidebar = () => {
         <a href="#" className="text-white hover:text-gray-300 block">Settings</a>
       </nav>
 
+     
+      <LogoutButton />
       
       <div className="mt-auto flex items-center space-x-4">
         <span className="text-white">Nurse Name</span>

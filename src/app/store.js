@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userDetailReducer from '../features/FetchapiSlice';
-import authReducer from '../features/authSlice';
+import authReducer, { logoutUser } from '../features/authSlice'; // Import logoutUser action creator
 import storage from 'redux-persist/lib/storage';
-import { persistReducer } from 'redux-persist'; // Changed import
+import { persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
 
 const persistConfig = {
@@ -11,15 +11,23 @@ const persistConfig = {
   storage
 };
 
-const reducer = combineReducers({
+const appReducer = combineReducers({
   app: userDetailReducer,
   auth: authReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, reducer); 
+const rootReducer = (state, action) => {
+  if (action.type === 'auth/logoutUser') { 
+    storage.removeItem('persist:root');
+    return appReducer(undefined, action);
+  }
+  return appReducer(state, action);
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: persistedReducer, 
+  reducer: persistedReducer,
 });
 
 export default store;

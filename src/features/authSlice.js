@@ -2,6 +2,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+export const logoutUser = () => (dispatch) => {
+  
+  dispatch(setUser(null));
+};
+
 export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, { dispatch }) => {
  
   try {
@@ -31,8 +36,13 @@ const authSlice = createSlice({
   },
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
-      state.token = action.payload.token;
+      if (action.payload) {
+        state.user = action.payload;
+        state.token = action.payload.token;
+      } else {
+        state.user = null;
+        state.token = null;
+      }
       state.error = null;
     },
     setError: (state, action) => {
@@ -42,6 +52,7 @@ const authSlice = createSlice({
       state.error = null;
     },
   },
+  
 });
 
 export const { setUser, setError, clearError } = authSlice.actions;

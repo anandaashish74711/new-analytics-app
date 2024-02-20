@@ -32,7 +32,7 @@ export default function NurseBody() {
       </div>
       </div>
 
-      <div className="p-4 m-5 border rounded-lg bg-white flex-grow">
+      <div className="p-4  border rounded-lg bg-white flex-grow">
         <div className="mb-4 flex items-center justify-end">
           <input
             type="text"
