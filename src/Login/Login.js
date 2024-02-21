@@ -28,11 +28,11 @@ function Login() {
   useEffect(() => {
     if (user) {
       const { _id: userID, role: userRole } = user;
-      const url = `/layout/${userRole.toLowerCase()}/${userID}`;
+      const url = `/dashboard/${userRole.toLowerCase()}/${userID}`;
       navigate(url);
     }
   }, [user, navigate]);
-  
+
       
   
 

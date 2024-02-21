@@ -1,12 +1,19 @@
+// LogoutButton.js
+
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../features/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutButton = () => {
   const dispatch = useDispatch();
+  const navigate=useNavigate();
 
   const handleLogout = () => {
+    // Store the current URL before logging out
+    localStorage.setItem('lastLocation', window.location.pathname);
     dispatch(logoutUser());
+    navigate('/login');
   };
 
   return (

@@ -15,8 +15,11 @@ function App() {
     <Routes>
     <Route path="/" element={<Login />} />
     <Route path="/login" element={<Login />} />
-    <Route path="/layout" element={<Layout isLoggedIn={isLoggedIn} />} >
-      <Route path="doctor/:userID" element={<DoctorBody />} />
+    <Route path="/dashboard" element={<Layout isLoggedIn={isLoggedIn} />} >
+      <Route path="doctor/:userID" element={<DoctorBody />} >
+      <Route path="nurse/:userID" element={<NurseBody />} />
+      <Route path="patient/:userID" element={<Body />} />
+        </Route>
       <Route path="nurse/:userID" element={<NurseBody />} />
       <Route path="patient/:userID" element={<Body />} />
     </Route>

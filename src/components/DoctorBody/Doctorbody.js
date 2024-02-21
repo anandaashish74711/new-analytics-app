@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function DoctorBody() {
   const navigate = useNavigate();
@@ -12,12 +12,9 @@ export default function DoctorBody() {
     setShowNurses((prevShowNurses) => !prevShowNurses);
   };
 
-
-  const handleView = (patientId) => {
-    if (showNurses) {
-      navigate(`/patinet/${patientId}`);
-    } 
-  }
+  const handleView = (userId, userType) => {
+    navigate(`/dashboard/${userType}/${userId}`);
+  };
 
   const filteredData = showNurses
     ? userData?.nurses?.filter((nurse) =>
@@ -78,15 +75,14 @@ export default function DoctorBody() {
         <div className="p-4 bg-white">
           <div className="flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
             {filteredData.map((data, index) => (
-             <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between ">
-             <p className="text-primary text-md font-medium">
-               {showNurses ? data.nurseName : data.patientName}
-             </p>
-             <button className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" onClick={() => handleView(showNurses ? data.nurseId : data.patientId)}>
-               <p className='text-white'>View</p>
-             </button>
-           </div>
-           
+              <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between">
+                <p className="text-primary text-md font-medium">
+                  {showNurses ? data.nurseName : data.patientName}
+                </p>
+                <button className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" onClick={() => handleView(showNurses ? data.nurseId : data.patientId, showNurses ? 'nurse' : 'patient')}>
+                  <p className='text-white'>View</p>
+                </button>
+              </div>
             ))}
           </div>
         </div>

@@ -18,11 +18,12 @@ const Sidebar = () => {
         <a href="#" className="text-white hover:text-gray-300 block">Tasks</a>
         <a href="#" className="text-white hover:text-gray-300 block">Settings</a>
       </nav>
-
-     
+      <div className="mt-64 flex items-center space-x-4">
       <LogoutButton />
-      
+     
+      </div>
       <div className="mt-auto flex items-center space-x-4">
+        
         <span className="text-white">Nurse Name</span>
         <img
           src="https://placekitten.com/40/40"
