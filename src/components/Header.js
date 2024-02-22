@@ -1,7 +1,9 @@
 import React from 'react';
 import LogoutButton from '../Logout/Logout'; // Assuming the LogoutButton component is located in the same directory
+import {  useSelector } from 'react-redux';
 
 const Sidebar = () => {
+  const userData = useSelector((state) => state.auth.user);
   
   return (
     <div className="bg-blue-800 h-full fixed w-1/6  p-4 flex flex-col">
@@ -24,7 +26,7 @@ const Sidebar = () => {
       </div>
       <div className="mt-auto flex items-center space-x-4">
         
-        <span className="text-white">Nurse Name</span>
+        <span className="text-white">{userData.name}</span>
         <img
           src="https://placekitten.com/40/40"
           alt="User Avatar"

@@ -25,6 +25,7 @@ export default function DoctorBody() {
       );
 
   return (
+    
     <div className='ml-6'>
       <div className="grid grid-cols-3 m-6 mt-4 ml-20 ">
         {/* Total Nurses */}
@@ -57,9 +58,7 @@ export default function DoctorBody() {
             />
             {/* Search Button */}
             <button
-              onClick={() => {
-                // Logic for search
-              }}
+              
               className="bg-blue-500 rounded-md h-11 w-16 transition hover:bg-blue-600 ml-2"
             >
               <h1 className="text-center text-white">Search</h1>
@@ -72,21 +71,35 @@ export default function DoctorBody() {
         </div>
         {/* List of Nurses/Patients */}
         <h2 className="text-primary text-lg font-medium mb-4">{showNurses ? 'Nurse List' : 'Patient List'}</h2>
-        <div className="p-4 bg-white">
-          <div className="flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-            {filteredData.map((data, index) => (
-              <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between">
-                <p className="text-primary text-md font-medium">
-                  {showNurses ? data.nurseName : data.patientName}
-                </p>
-                <button className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" onClick={() => handleView(showNurses ? data.nurseId : data.patientId, showNurses ? 'nurse' : 'patient')}>
-                  <p className='text-white'>View</p>
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+<div className="p-4 bg-white">
+  <div className="flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+    {filteredData.map((data, index) => (
+      <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between">
+        <p className="text-primary text-md font-medium">
+          {showNurses ? data.nurseName : data.patientName}
+        </p>
+        {showNurses && data.patientName && (
+          <p className="text-primary text-md font-medium">
+            Assigned to: {data.patientName}
+          </p>
+        )}
+        {!showNurses && data.nurseName && (
+          <p className="text-primary text-md font-medium">
+            {data.nurseName}
+          </p>
+        )}
+        <button className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" onClick={() => handleView(showNurses ? data.nurseId : data.patientId, showNurses ? 'nurse' : 'patient')}>
+          <p className='text-white'>View</p>
+        </button>
       </div>
+    ))}
+  </div>
+</div>
+
+
+
+  </div>
+            
     </div>
   );
 }

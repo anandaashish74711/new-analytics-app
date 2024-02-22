@@ -1,10 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-
-
-export const getUser = createAsyncThunk("getUser", async ({userID}) => {
-  
-  const apiUrl=`http://localhost:4000/api/v1/patientInfo/${userID}`;
+export const getUser = createAsyncThunk("getUser", async ({ userID }) => {
+  const apiUrl = `http://localhost:4000/api/v1/patientInfo/${userID}`;
 
   try {
     const response = await fetch(apiUrl);
@@ -16,7 +13,6 @@ export const getUser = createAsyncThunk("getUser", async ({userID}) => {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error("Error fetching user data:", error);
     throw error; // Throw the error to indicate a failure
   }
 });
@@ -46,6 +42,7 @@ const userDetailSlice = createSlice({
       .addCase(getUser.rejected, (state, action) => {
         state.isloading = false;
         state.error = action.error.message;
+        console.error("Error fetching user data:", action.error);
       });
   },
 });

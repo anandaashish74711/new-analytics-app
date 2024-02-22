@@ -3,12 +3,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export default function ComorbiditiesCard() {
-  const { loading, error, users } = useSelector((state) => state.app);
+  const { loading,  users } = useSelector((state) => state.app);
 
   return (
     <div className="container mx-auto p-4 flex  ">
       {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">Error: {error}</p>}
+     
       {users && users.comorbidities && (
         <div className="flex-1">
           <div className=" shadow-md rounded-md p-4 aspect-w-1 aspect-h-1 w-11/12 bg-slate-200"> {/* Adjusted width to w-11/12 */}
