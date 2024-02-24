@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../../features/FetchapiSlice';
 
 export default function DoctorBody() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.user);
   const [showNurses, setShowNurses] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,7 +14,8 @@ export default function DoctorBody() {
     setShowNurses((prevShowNurses) => !prevShowNurses);
   };
 
-  const handleView = (userId, userType) => {
+  const handleView =async  (userId, userType) => {
+    await dispatch(getUser({ userId, userType })); 
     navigate(`/dashboard/${userType}/${userId}`);
   };
 
@@ -24,7 +27,9 @@ export default function DoctorBody() {
         patient.patientName.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
+
   return (
+    
     
     <div className='ml-6'>
       <div className="grid grid-cols-3 m-6 mt-4 ml-20 ">

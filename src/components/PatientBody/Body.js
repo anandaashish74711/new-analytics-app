@@ -1,22 +1,13 @@
-import React, { useEffect } from 'react';
-import { useDispatch ,useSelector} from 'react-redux';
+import React from 'react';
+
 import Profile from './Profile';
 import BioGraph from './BioGraph';
 import ComorbiditiesCard from './combodities' ;
-import { getUser } from '../../features/FetchapiSlice';
+
 
 
 export default function Body() {
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-  const userID=user._id
- 
-  
-  
 
-  useEffect(() => {
-    dispatch(getUser( {userID}));
-  }, [dispatch]);
 
 
   return (

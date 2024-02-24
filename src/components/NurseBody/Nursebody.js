@@ -1,38 +1,50 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getUser } from '../../features/FetchapiSlice';
 
 export default function NurseBody() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.user);
   const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState(null);
 
-  const filteredPatients = userData?.patients.filter(
+  const handleView = async (userId, userType) => {
+    try {
+      console.log("Dispatching getUser with userId:", userId, "and userType:", userType);
+      await dispatch(getUser({ userId, userType })); 
+      navigate(`/dashboard/${userType}/${userId}`);
+    } catch (error) {
+      setError('Error fetching user data');
+    }
+  };
+  
+
+  // Ensure userData and userData.patients are not null before accessing
+  const filteredPatients = userData?.patients ? userData.patients.filter(
     (patient) =>
       patient.patientName.toLowerCase().includes(searchTerm.toLowerCase()) 
-  );
+  ) : [];
 
-  const totalPatients = userData?.patients.length || 0;
+  const totalPatients = userData?.patients ? userData.patients.length : 0;
 
   return (
-    <div className=" h-screen py-6 pl-10 mt-4">
-<div className='grid grid-cols-3   ml-10 mb-10'>
-<div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
+    <div className="h-screen py-6 pl-10 mt-4">
+      <div className='grid grid-cols-3 ml-10 mb-10'>
+        <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
           {totalPatients}
-          <div className="text-white text-sm ">Total Patients</div>
-        
-      </div>
-      <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
-          {totalPatients}
-          <div className="text-white text-sm ">Total visits</div>
-        
-      </div>
-      <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
-          {totalPatients}
-          <div className="text-white text-sm ">Total Nurses</div>
-        
-      </div>
+          <div className="text-white text-sm">Total Patients</div>
+        </div>
+        <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
+          {/* Display Total Visits */}
+        </div>
+        <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
+          {/* Display Total Nurses */}
+        </div>
       </div>
 
-      <div className="p-4  border rounded-lg bg-white flex-grow">
+      <div className="p-4 border rounded-lg bg-white flex-grow">
         <div className="mb-4 flex items-center justify-end">
           <input
             type="text"
@@ -43,7 +55,7 @@ export default function NurseBody() {
           />
           <button
             onClick={() => {
-              
+              // Handle Search
             }}
             className="bg-blue-500 rounded-md h-11 w-16 transition hover:bg-blue-600 ml-2"
           >
@@ -52,12 +64,19 @@ export default function NurseBody() {
         </div>
 
         <h2 className="text-primary text-lg font-medium mb-4">Patient List</h2>
-       <div className='p-4 bg-white'></div>
+        {error && <p className="text-red-500">{error}</p>}
+        <div className='p-4 bg-white'></div>
         <div className="flex flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-          {filteredPatients.map((patient) => (
+          {/* Check if filteredPatients is an array before mapping */}
+          {Array.isArray(filteredPatients) && filteredPatients.map((patient) => (
             <div key={patient._id} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full grid-flow-col">
               <p className="text-primary text-md font-medium">{patient.patientName}</p>
               <p className="text-primary text-md font-medium">{patient.nurseName}</p>
+              <button 
+                className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" 
+                onClick={() => handleView(patient._id, 'patient')}>
+                <p className='text-white'>View</p>
+              </button>
             </div>
           ))}
         </div>

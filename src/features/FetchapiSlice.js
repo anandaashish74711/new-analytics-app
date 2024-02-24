@@ -1,8 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const getUser = createAsyncThunk("getUser", async ({ userID }) => {
-  const apiUrl = `http://localhost:4000/api/v1/patientInfo/${userID}`;
-
+export const getUser = createAsyncThunk("getUser", async ({ userId, userType }) => {
+  let apiUrl;
+  
+  // Determine the API endpoint based on the userType
+  switch (userType) {
+    case 'doctor':
+      apiUrl = `http://localhost:4000/api/v1/doctorInfo/${userId}`;
+      break;
+    case 'nurse':
+      apiUrl = `http://localhost:4000/api/v1/nurse/${userId}`;
+      break;
+    case 'patient':
+      apiUrl = `http://localhost:4000/api/v1/patientInfo/${userId}`;
+      break;
+    default:
+      throw new Error('Invalid userType provided');
+  }
+  
   try {
     const response = await fetch(apiUrl);
 
