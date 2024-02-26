@@ -9,7 +9,7 @@
 
     return (
       <>
-          <div className='grid grid-cols-7 '>
+          <div className='grid grid-cols-7 bg-black'>
             <div className='col-span-1'>
               <Header />
             </div>

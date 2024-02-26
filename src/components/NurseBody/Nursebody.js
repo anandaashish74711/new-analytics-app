@@ -22,10 +22,10 @@ export default function NurseBody() {
   
 
   // Ensure userData and userData.patients are not null before accessing
-  const filteredPatients = userData?.patients ? userData.patients.filter(
-    (patient) =>
-      patient.patientName.toLowerCase().includes(searchTerm.toLowerCase()) 
-  ) : [];
+  const filteredPatients =userData?.patients?.filter((patient) =>
+  patient.patientName.toLowerCase().includes(searchTerm.toLowerCase())|| 
+  patient.patientAge.toLowerCase().includes(searchTerm.toLowerCase()) 
+  ) || [];
 
   const totalPatients = userData?.patients ? userData.patients.length : 0;
 
@@ -68,17 +68,23 @@ export default function NurseBody() {
         <div className='p-4 bg-white'></div>
         <div className="flex flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
           {/* Check if filteredPatients is an array before mapping */}
-          {Array.isArray(filteredPatients) && filteredPatients.map((patient) => (
-            <div key={patient._id} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full grid-flow-col">
-              <p className="text-primary text-md font-medium">{patient.patientName}</p>
-              <p className="text-primary text-md font-medium">{patient.nurseName}</p>
-              <button 
-                className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" 
-                onClick={() => handleView(patient._id, 'patient')}>
-                <p className='text-white'>View</p>
-              </button>
-            </div>
-          ))}
+          {filteredPatients.map((patient, index) => (
+  <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between">
+    <div>
+      <p className="text-primary text-md font-medium">Name: {patient.patientName}</p>
+   
+    </div>
+    <button 
+      className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" 
+      onClick={() => handleView(patient.patientId, 'patient')}>
+      <p className='text-white'>View</p>
+    </button>
+  </div>
+))}
+
+
+
+        
         </div>
       </div>
     </div>

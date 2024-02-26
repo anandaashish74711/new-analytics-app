@@ -78,6 +78,7 @@ export default function DoctorBody() {
         <h2 className="text-primary text-lg font-medium mb-4">{showNurses ? 'Nurse List' : 'Patient List'}</h2>
 <div className="p-4 bg-white">
   <div className="flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+    
     {filteredData.map((data, index) => (
       <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between">
         <p className="text-primary text-md font-medium">

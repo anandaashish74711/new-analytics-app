@@ -232,7 +232,7 @@ const options = {
         </div>
       </div>
     );
-  }
+  }m     
 }
 
 export default BioGraph;
