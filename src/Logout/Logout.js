@@ -18,9 +18,10 @@ const LogoutButton = () => {
   };
 
   return (
-    <button className="bg-white-500 hover:bg-white-600 text-white font-bold py-2 px-4 rounded" onClick={handleLogout}>
-       <IoIosLogOut className="text-white" />
-    </button>
+    <button className="bg-white-500 hover:bg-white-600 text-white font-bold py-2 px-4 rounded" onClick={handleLogout} style={{ fontSize: '1.5em', padding: '0.75em' }}>
+    <IoIosLogOut className="text-white" style={{ fontSize: '1.5em' }} />
+ </button>
+ 
   );
 };
 

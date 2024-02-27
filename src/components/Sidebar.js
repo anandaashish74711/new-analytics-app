@@ -22,7 +22,7 @@ const Sidebar = ({ collapsed, toggleSidebar, toggleSidebarCompletely }) => {
         <a href="#" className="text-white hover:text-gray-300 block"><FaUser className="inline-block mr-2" />Patients</a>
         <a href="#" className="text-white hover:text-gray-300 block"><FaCog className="inline-block mr-2" />Appointments</a>
       </nav>
-      <div className="mt-64 flex items-center space-x-4">
+      <div className="mt-80 flex items-center space-x-4">
        
         <LogoutButton />
       </div>
