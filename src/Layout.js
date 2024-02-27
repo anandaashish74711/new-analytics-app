@@ -1,31 +1,44 @@
+import React, { useState } from 'react';
+import Sidebar from './components/Sidebar';
+import { Outlet } from 'react-router-dom';
+import { FaBars } from 'react-icons/fa'; // Correct import statement for FaBars
 
-  import Header from './components/Header';
-  import { Outlet } from 'react-router-dom';
-  
- 
+function Layout() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  function Layout() {
+  const toggleSidebar = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
 
+  const toggleSidebarCompletely = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
 
-    return (
-      <>
-          <div className='grid grid-cols-7 bg-black'>
-            <div className='col-span-1'>
-              <Header />
-            </div>
-            <div className='col-span-6'>
-              <Outlet/>
-            </div>
+  return (
+    <>
+      <div className='grid grid-cols-7'>
+        {/* Sidebar */}
+        <div className='col-span-1'>
+          <Sidebar 
+            collapsed={sidebarCollapsed} 
+            toggleSidebar={toggleSidebar} 
+            toggleSidebarCompletely={toggleSidebarCompletely} 
+          />
+        </div>
+        {/* Outlet */}
+        <div className={sidebarCollapsed ? 'col-span-7' : 'col-span-6'}>
+          {/* Button to toggle the sidebar completely */}
+          <div 
+            className="cursor-pointer absolute top-0 right-0 mr-4 mt-4" 
+            onClick={toggleSidebarCompletely}
+          >
+            <FaBars className="text-blue" />
           </div>
-        
-      </>
-    );
-  }
+          <Outlet/>
+        </div>
+      </div>
+    </>
+  );
+}
 
-  export default Layout;
-
-
-
-
-  
-  
+export default Layout;
