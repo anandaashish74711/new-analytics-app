@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
+import backgroundImage from '../components/PatientBody/background-healthcare.jpg';
 
 
 function Login() {
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`, // Set background image
+    backgroundSize: 'cover', // Cover the entire container
+    backgroundRepeat: 'no-repeat', // Do not repeat the image
+    backgroundPosition: 'center', // Center the image horizontally and vertically
+  };
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
   const authError = useSelector((state) => state.auth.error);
@@ -44,8 +51,9 @@ function Login() {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-white p-8 rounded shadow-md w-96">
+   
+    <div className="min-h-screen flex items-center justify-center "style={backgroundStyle}>
+      <div className="bg- p-8 rounded shadow-md w-96">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
@@ -104,6 +112,7 @@ function Login() {
         </form>
       </div>
     </div>
+    
   );
 }
 

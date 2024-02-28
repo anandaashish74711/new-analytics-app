@@ -19,12 +19,23 @@ export default function NurseBody() {
       setError('Error fetching user data');
     }
   };
-  
+
+  const handleSearch = () => {
+    // Implement search logic here
+    // For example, you can filter the patients based on searchTerm
+    // This is just an example, you may need to modify it based on your actual data structure
+    const filteredPatients = userData?.patients?.filter(patient =>
+      (patient.patientName && patient.patientName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (patient.patientAge && patient.patientAge.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    // Handle filtered patients, for now, let's console log
+    console.log(filteredPatients);
+  };
 
   // Ensure userData and userData.patients are not null before accessing
-  const filteredPatients =userData?.patients?.filter((patient) =>
-  patient.patientName.toLowerCase().includes(searchTerm.toLowerCase())|| 
-  patient.patientAge.toLowerCase().includes(searchTerm.toLowerCase()) 
+  const filteredPatients = userData?.patients?.filter((patient) =>
+    (patient.patientName && patient.patientName.toLowerCase().includes(searchTerm.toLowerCase())) || 
+    (patient.patientAge && patient.patientAge.toLowerCase().includes(searchTerm.toLowerCase()))
   ) || [];
 
   const totalPatients = userData?.patients ? userData.patients.length : 0;
@@ -37,10 +48,12 @@ export default function NurseBody() {
           <div className="text-white text-sm">Total Patients</div>
         </div>
         <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
-          {/* Display Total Visits */}
+          {totalPatients}
+          <div className="text-white text-sm">Total Doctores</div>
         </div>
         <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
-          {/* Display Total Nurses */}
+          {totalPatients}
+          <div className="text-white text-sm">Total Visits</div>
         </div>
       </div>
 
@@ -54,9 +67,7 @@ export default function NurseBody() {
             className="p-2 border rounded-md rounded-end focus:outline-none focus:ring focus:border-blue-300"
           />
           <button
-            onClick={() => {
-              // Handle Search
-            }}
+            onClick={handleSearch}
             className="bg-blue-500 rounded-md h-11 w-16 transition hover:bg-blue-600 ml-2"
           >
             <h1 className="text-center text-white">Search</h1>
@@ -69,22 +80,17 @@ export default function NurseBody() {
         <div className="flex flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
           {/* Check if filteredPatients is an array before mapping */}
           {filteredPatients.map((patient, index) => (
-  <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between">
-    <div>
-      <p className="text-primary text-md font-medium">Name: {patient.patientName}</p>
-   
-    </div>
-    <button 
-      className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" 
-      onClick={() => handleView(patient.patientId, 'patient')}>
-      <p className='text-white'>View</p>
-    </button>
-  </div>
-))}
-
-
-
-        
+            <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between">
+              <div>
+                <p className="text-primary text-md font-medium">{patient.patientName}</p>
+              </div>
+              <button 
+                className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" 
+                onClick={() => handleView(patient.patientId, 'patient')}>
+                <p className='text-white'>View</p>
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>
