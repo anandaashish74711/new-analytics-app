@@ -5,7 +5,7 @@ export default function Profile() {
   const userData = useSelector((state) => state.app.users);
 
   return (
-    <div className="bg-gray-200 rounded-lg shadow-md p-4 m-5 w-64"> 
+    <div className="bg-slate-200 rounded-lg shadow-md p-4 m-5 w-64"> 
 
       {userData && (
         <div className="flex flex-col items-center">

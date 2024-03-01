@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Profile from './Profile';
 import BioGraph from './BioGraph';
 import ComorbiditiesCard from './combodities';
-import backgroundImage from './background-healthcare.jpg'; // Import your background image file
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../features/FetchapiSlice';
 
 export default function Body() {
-  const backgroundStyle = {
-    backgroundImage: `url(${backgroundImage})`, // Set background image
-    backgroundSize: 'cover', // Cover the entire container
-    backgroundRepeat: 'no-repeat', // Do not repeat the image
-    backgroundPosition: 'center', // Center the image horizontally and vertically
-  };
+ 
+
+  const user = useSelector((state) => state.auth.user);
+  const userId = user._id;
+  const userType = user.role;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(userType === 'patient') {
+      dispatch(getUser({ userId, userType }));
+   
+    }
+  }, [user]);
 
   return (
-    <div className='flex' style={backgroundStyle}> 
+    <div className='flex bg-' >
       <div className='w-1/4 p-4'>
         <Profile />
         <div className='ml-2'>

@@ -1,25 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
-import { Chart as chartJs, LineElement, CategoryScale, LinearScale, PointElement, TimeScale } from 'chart.js';
 import { useSelector } from 'react-redux';
+import * as echarts from 'echarts';
 
-chartJs.register(
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  PointElement
-);
-
-function sampleArray(array, sampleSize) {
-  const sampledArray = [];
-  const step = Math.max(1, Math.floor(array.length / sampleSize));
-
-  for (let i = 0; i < array.length; i += step) {
-    sampledArray.push(array[i]);
-  }
-
-  return sampledArray;
+function formatTimestamp(timestamp) {
+  const date = new Date(timestamp);
+  return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 }
 
 function BioGraph() {
@@ -36,14 +21,26 @@ function BioGraph() {
   const [postSensorFilter, setPostSensorFilter] = useState(null);
 
   useEffect(() => {
+    const chart = echarts.init(document.getElementById('chart'));
+    chart.setOption(getChartData());
+    chart.on('click', function(params) {
+      console.log(params);
+    });
+    chart.on('dataZoom', function(params) {
+      console.log(params);
+    });
+    window.addEventListener('resize', function() {
+      chart.resize();
+    });
+  }, [values]);
+
+  useEffect(() => {
     if (users) {
       const filteredData = applyFilters(users, frequencyFilter, selectedVisitIndex, postGeneratorFilter, postSensorFilter);
       setFilteredMedicalData(filteredData);
-
-      const sampledValues = sampleArray(filteredData.map((item) => item[visualizationType]), sampleSize);
-      setValues(sampledValues);
+      setValues(filteredData.map((item) => item[visualizationType]));
     }
-  }, [users, frequencyFilter, visualizationType, sampleSize, selectedVisitIndex, postGeneratorFilter, postSensorFilter]);
+  }, [users, frequencyFilter, visualizationType, selectedVisitIndex, postGeneratorFilter, postSensorFilter]);
 
   const applyFilters = (users, frequencyFilter, selectedVisitIndex, postGeneratorFilter, postSensorFilter) => {
     const { targetFrequency } = frequencyFilter;
@@ -81,64 +78,51 @@ function BioGraph() {
   };
 
   const getChartData = () => {
-    const dataKey = visualizationType === 'bioImpedance' ? 'bioImpedance' : 'phaseAngle';
-    const timestamps = sampleArray(
-      users.visit[selectedVisitIndex]?.MedicalData.map((medicalData) => {
-        const date = new Date(medicalData.timestamp);
-        return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
-      }) || [],
-      sampleSize
-    );
+    const timestamps = users.visit[selectedVisitIndex]?.MedicalData.map((medicalData) => formatTimestamp(medicalData.timestamp)) || [];
 
     return {
-      labels: timestamps,
-      datasets: [
+      xAxis: {
+        type: 'category',
+        data: timestamps,
+      },
+      yAxis: {
+        type: 'value',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985'
+          }
+        },
+        formatter: function(params) {
+          return `${params[0].name}: ${params[0].value}`;
+        }
+      },
+      dataZoom: [
         {
-          label: `${visualizationType === 'bioImpedance' ? 'Bioimpedance' : 'Phase Angle'} Values`,
+          type: 'slider',
+          start: 0,
+          end: 100,
+          xAxisIndex: [0],
+        },
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
+          xAxisIndex: [0],
+        },
+      ],
+      series: [
+        {
+          name: `${visualizationType === 'bioImpedance' ? 'Bioimpedance' : 'Phase Angle'} Values`,
           data: values,
-          backgroundColor: 'rgba(75,192,192,0.2)',
-          borderColor: 'rgba(75,192,192,1)',
-          borderWidth: 1,
-          pointBackgroundColor: 'blue',
+          type: 'line',
         },
       ],
     };
   };
-
-  
-const options = {
-  type: 'line',
-  options: {
-    plugins: {
-      title: {
-        text: 'Chart.js Time Scale',
-        display: true,
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    },
-    scales: {
-      x: {
-        type: 'time',
-        time: {
-          tooltipFormat: 'DD T',
-        },
-        title: {
-          display: true,
-          text: 'Date',
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text:Date,
-        },
-      },
-    },
-    responsive: true,
-  },
-};
-  
 
   if (!users) {
     return <h1>loading</h1>;
@@ -147,11 +131,11 @@ const options = {
       <div className="bg-gray-200 min-h-screen p-4 my-4 rounded-lg">
         <h2 className="text-2xl font-bold mb-4">{Bio}</h2>
         <button
-  onClick={toggleVisualizationType}
-  className="bg-blue-500 text-white py-2 m-2 px-4 rounded hover:bg-blue-700 transition duration-300"
->
-  ({Bio === 'BioImpedance' ? 'Phase Angle' : 'BioImpedance'})
-</button>
+          onClick={toggleVisualizationType}
+          className="bg-blue-500 text-white py-2 m-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+        >
+          ({Bio === 'BioImpedance' ? 'Phase Angle' : 'BioImpedance'})
+        </button>
 
         <div className="flex flex-wrap mb-4">
           <div className="flex items-center mb-2 mr-4">
@@ -207,32 +191,29 @@ const options = {
           </div>
 
           <div className="flex items-center mb-2">
-  <label htmlFor="visitIndex" className="mr-2">
-    Visit:
-  </label>
-  <input
-    type="number"
-    id="visitIndex"
-    value={selectedVisitIndex}
-    onChange={handleVisitIndexChange}
-    className="border p-2"
-  />
-  {users.visit[selectedVisitIndex] ? (
-    <span className="ml-2 text-gray-500">
-      Visit Date: {new Date(users.visit[selectedVisitIndex].visitDate).toLocaleDateString()}
-    </span>
-  ) : (
-    <span className="ml-2 text-gray-500">Default Visit Date</span>
-  )}
-</div>
-
+            <label htmlFor="visitIndex" className="mr-2">
+              Visit:
+            </label>
+            <input
+              type="number"
+              id="visitIndex"
+              value={selectedVisitIndex}
+              onChange={handleVisitIndexChange}
+              className="border p-2"
+            />
+            {users.visit[selectedVisitIndex] ? (
+              <span className="ml-2 text-gray-500">
+                Visit Date: {formatTimestamp(users.visit[selectedVisitIndex].visitDate)}
+              </span>
+            ) : (
+              <span className="ml-2 text-gray-500">Default Visit Date</span>
+            )}
+          </div>
         </div>
-        <div className="mt-4">
-          <Line data={getChartData()} options={options} />
-        </div>
+        <div id="chart" style={{ width: '100%', height: '400px' }}></div>
       </div>
     );
-  }    
+  }
 }
 
 export default BioGraph;
