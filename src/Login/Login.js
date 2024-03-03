@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../components/PatientBody/background-healthcare.jpg';
-
-
+import patient from '../components/PatientBody/patient.jpg'
 function Login() {
   const backgroundStyle = {
-    backgroundImage: `url(${backgroundImage})`, // Set background image
+    backgroundImage: `url(${patient})`, // Set background image
     backgroundSize: 'cover', // Cover the entire container
     backgroundRepeat: 'no-repeat', // Do not repeat the image
     backgroundPosition: 'center', // Center the image horizontally and vertically
@@ -56,7 +54,7 @@ function Login() {
       <div className="bg- p-8 rounded shadow-md w-96">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
               Email:
             </label>
             <input
@@ -69,7 +67,7 @@ function Login() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="password" className="block text-white text-sm font-bold mb-2">
               Password:
             </label>
             <input
@@ -77,25 +75,26 @@ function Login() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:shadow-outline "
             />
           </div>
 
           <div>
-            <label htmlFor="role" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="role" className="block  text-white text-sm font-bold mb-2">
               Role:
             </label>
             <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:shadow-outline"
-            >
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:shadow-outline  "
+            > 
               <option value="">Select Role</option>
               <option value="Admin">Admin</option>
               <option value="Doctor">Doctor</option>
               <option value="Nurse">Nurse</option>
               <option value="Patient">Patient</option>
+
             </select>
           </div>
 

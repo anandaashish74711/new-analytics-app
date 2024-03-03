@@ -11,11 +11,11 @@ export default function ComorbiditiesCard() {
      
       {users && users.comorbidities && (
         <div className="flex-1">
-          <div className=" shadow-md rounded-md p-4 aspect-w-1 aspect-h-1 w-11/12 bg-slate-200"> {/* Adjusted width to w-11/12 */}
-            <h2 className="text-2xl font-bold mb-4 text-center">Comorbidities</h2>
+          <div className=" shadow-md rounded-md p-4 aspect-w-1 aspect-h-1 w-12/12 bg-gray-800 transition-shadow"> 
+            <h2 className="text-2xl font-bold mb-4 text-center text-white">Comorbidities</h2>
             <ul className="list-disc ml-6 mb-4"> {/* Added margin-bottom for a bit more spacing */}
               {Object.entries(users.comorbidities).map(([key, value]) => (
-                <li key={key} className="mb-2">
+                <li key={key} className="mb-2 text-white">
                   <span className="font-bold">{key}:</span>{" "}
                   {value ? "Yes" : "No"}
                 </li>

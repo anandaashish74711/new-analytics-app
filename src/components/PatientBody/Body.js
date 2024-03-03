@@ -4,33 +4,33 @@ import BioGraph from './BioGraph';
 import ComorbiditiesCard from './combodities';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../features/FetchapiSlice';
+import { useParams } from 'react-router-dom';
 
 export default function Body() {
- 
+  const { userID } = useParams();
+  
+  console.log("User ID:", userID);
 
-  const user = useSelector((state) => state.auth.user);
-  const userId = user._id;
-  const userType = user.role;
   const dispatch = useDispatch();
 
+
   useEffect(() => {
-    if(userType === 'patient') {
-      dispatch(getUser({ userId, userType }));
-   
-    }
-  }, [user]);
+      console.log("Dispatching getUser action with:", userID);
+      dispatch(getUser({userId: userID, userType: 'patient'}));
+  }, [userID]);
+
+  // console.log("User:", user);
 
   return (
-    <div className='flex bg-' >
-      <div className='w-1/4 p-4'>
+    <div className='flex  text-white bg-gray-500'>
+      <div className='mt-3'>
         <Profile />
-        <div className='ml-2'>
+        <div className=''>
           <ComorbiditiesCard />
         </div>
       </div>
-
       <div className='w-3/4 p-4'>
-        <div className=''>
+        <div className='bg-gray-800 rounded-lg pb-16  pl-4 shadow-md '>
           <BioGraph />
         </div>
       </div>
