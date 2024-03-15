@@ -3,10 +3,6 @@ import { useSelector } from 'react-redux';
 import * as echarts from 'echarts';
 
 
-// Function to calculate Total Body Water (TBW)
-const calculateTBW = (ri, weight, age, sex) => {
-  return 0.149 * ri + 0.244 * weight + 0.460 * age + 0.501 * sex + 1.628;
-}
 
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
@@ -27,7 +23,7 @@ function BioGraph() {
   const [postGeneratorFilter, setPostGeneratorFilter] = useState(null);
   const [postSensorFilter, setPostSensorFilter] = useState(null);
   const [averageValue, setAverageValue] = useState(null);
-  const [tbw, setTbw] = useState(null); // State for TBW value
+
 
   useEffect(() => {
     const chart = echarts.init(document.getElementById('chart'));
@@ -65,14 +61,10 @@ function BioGraph() {
       const avg = sum / filteredData.length;
       setAverageValue(avg);
 
-      // Calculate and set TBW
-      const ri = 97 / Math.PI; // Assuming this value for ri
-      const weight = userData.Weight; // Get weight from your data source
-      const age = userData.height; // Get age from your data source
-      const sex = userData.gender==="male"?1:0; // Get sex from your data source (e.g., male = 1, female = 0)
-      const calculatedTBW = calculateTBW(ri, weight, age, sex);
-      console.log(sex)
-      setTbw(calculatedTBW);
+
+    
+      
+    
 
     }
   }, [users, frequencyFilter, visualizationType, selectedVisitIndex, postGeneratorFilter, postSensorFilter]);
@@ -199,7 +191,7 @@ function BioGraph() {
     return <h1>loading</h1>;
   } else {
     return (
-      <div className="bg-transparent hover:bg-grey-800 min-h-screen p-4 my-4 rounded-lg">
+      <div className=" h-auto p-4 my-4 rounded-lg shadow-lg bg-white">
        
         <button
           onClick={toggleVisualizationType}
@@ -286,7 +278,7 @@ function BioGraph() {
         <h2 className="text-2xl font-bold mb-4">{Bio === 'Phase Angle' ? 'Bioimpedance' : 'Phase Angle'}</h2>
         <div id="chart" style={{ width: '100%', height: '400px' }}></div>
         
-        {/* Display average value */}
+   
         {averageValue && (
           <div className="mt-4">
             <h3 className="text-lg font-bold mb-2">Average Value</h3>
@@ -297,20 +289,7 @@ function BioGraph() {
           </div>
         )}
 
-        {/* Display TBW value */}
-        <div className='flex'>
-        <h3 className="text-lg font-bold mb-2">Total Body Water (TBW):</h3>
-        {tbw && (
-          <div className="mt-4">
-            <h3 className="text-lg font-bold mb-2">Total Body Water (TBW)</h3>
-            <div className="flex items-center">
-              <span className="mr-2">TBW:</span>
-              <span className="text-red-500 font-bold">{tbw.toFixed(2)} kg</span>
-            </div>
-          </div>
-          
-        )}
-      </div>
+        
       </div>
     );
   }

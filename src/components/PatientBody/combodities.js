@@ -10,10 +10,10 @@ export default function ComorbiditiesCard() {
       {loading && <p>Loading...</p>}
      
       {users && users.comorbidities && (
-        <div className="flex-1">
-          <div className=" shadow-md rounded-md p-4 aspect-w-1 aspect-h-1 w-12/12 bg-gray-800 transition-shadow"> 
+        <div className="flex-1 shadow-lg">
+          <div className=" shadow-md rounded-md p-4 aspect-w-1 aspect-h-1 w-12/12 bg-white-800 transition-shadow"> 
             <h2 className="text-2xl font-bold mb-4 text-center text-white">Comorbidities</h2>
-            <ul className="list-disc ml-6 mb-4"> {/* Added margin-bottom for a bit more spacing */}
+            <ul className="list-disc ml-6 mb-4"> 
               {Object.entries(users.comorbidities).map(([key, value]) => (
                 <li key={key} className="mb-2 text-white">
                   <span className="font-bold">{key}:</span>{" "}
