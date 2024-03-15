@@ -20,10 +20,15 @@ export default function Body() {
 
   return (
     <>
-      <div className='h-20 w-screen shadow-lg mt-2'>
-        {/* Link to navigate to the report */}
-        <Link to={`/dashboard/patient/${userID}/report`}>View Report</Link>
-      </div>
+      <div className='h-20 w-screen shadow-lg mt-2 flex items-center justify-center'>
+  {/* Link to navigate to the report */}
+  <Link
+    to={`/dashboard/patient/${userID}/report`}
+    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300'
+  >
+    View Report
+  </Link>
+</div>
       <div className='flex text-white'>
         <div className='mt-3'>
           <Profile />

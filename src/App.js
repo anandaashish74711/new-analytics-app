@@ -18,6 +18,8 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Layout isLoggedIn={isLoggedIn} />}>
         <Route path="doctor/:userID" element={<DoctorBody />} />
+        <Route path="doctor/patient/:userID" element={<Body/>} />
+        <Route path="nurse/patient/:userID" element={<Body/>} />
         <Route path="nurse/:userID" element={<NurseBody />} />
         <Route path="patient/:userID" element={<Body />} />
         <Route path="patient/:userID/report" element={<Report />} />

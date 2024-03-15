@@ -14,7 +14,7 @@ export default function NurseBody() {
     try {
       console.log("Dispatching getUser with userId:", userId, "and userType:", userType);
       await dispatch(getUser({ userId, userType })); 
-      navigate(`/dashboard/${userType}/${userId}`);
+      navigate(`/dashboard/nurse/${userType}/${userId}`);
     } catch (error) {
       setError('Error fetching user data');
     }

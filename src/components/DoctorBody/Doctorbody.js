@@ -16,7 +16,7 @@ export default function DoctorBody() {
 
   const handleView =async  (userId, userType) => {
     await dispatch(getUser({ userId, userType })); 
-    navigate(`/dashboard/${userType}/${userId}`);
+    navigate(`/dashboard/doctor/${userType}/${userId}`);
   };
 
   const filteredData = showNurses

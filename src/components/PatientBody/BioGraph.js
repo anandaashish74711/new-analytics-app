@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import * as echarts from 'echarts';
 
-
-
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
   return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
@@ -24,26 +22,31 @@ function BioGraph() {
   const [postSensorFilter, setPostSensorFilter] = useState(null);
   const [averageValue, setAverageValue] = useState(null);
 
-
   useEffect(() => {
     const chart = echarts.init(document.getElementById('chart'));
     chart.setOption(getChartData());
-    chart.on('click', function(params) {
+    chart.on('click', function (params) {
       console.log(params);
     });
-    chart.on('dataZoom', function(params) {
+    chart.on('dataZoom', function (params) {
       console.log(params);
     });
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
       chart.resize();
     });
   }, [values]);
 
   useEffect(() => {
     if (users) {
-      const filteredData = applyFilters(users, frequencyFilter, selectedVisitIndex, postGeneratorFilter, postSensorFilter);
+      const filteredData = applyFilters(
+        users,
+        frequencyFilter,
+        selectedVisitIndex,
+        postGeneratorFilter,
+        postSensorFilter
+      );
       setFilteredMedicalData(filteredData);
-      
+
       const bioImpedanceValues = filteredData.map((item) => item.bioImpedance);
       const phaseAngleValues = filteredData.map((item) => item.phaseAngle);
 
@@ -54,29 +57,34 @@ function BioGraph() {
       }
 
       // Calculate average
-      const sum = visualizationType === 'bioImpedance' ? 
-        bioImpedanceValues.reduce((acc, curr) => acc + curr, 0) :
-        phaseAngleValues.reduce((acc, curr) => acc + curr, 0);
+      const sum =
+        visualizationType === 'bioImpedance'
+          ? bioImpedanceValues.reduce((acc, curr) => acc + curr, 0)
+          : phaseAngleValues.reduce((acc, curr) => acc + curr, 0);
 
       const avg = sum / filteredData.length;
       setAverageValue(avg);
-
-
-    
-      
-    
-
     }
-  }, [users, frequencyFilter, visualizationType, selectedVisitIndex, postGeneratorFilter, postSensorFilter]);
+  }, [
+    users,
+    frequencyFilter,
+    visualizationType,
+    selectedVisitIndex,
+    postGeneratorFilter,
+    postSensorFilter,
+  ]);
 
   const applyFilters = (users, frequencyFilter, selectedVisitIndex, postGeneratorFilter, postSensorFilter) => {
     const { targetFrequency } = frequencyFilter;
 
-    return users.visit[selectedVisitIndex]?.MedicalData.filter(
-      (item) => item.frequency === targetFrequency &&
-                  (postGeneratorFilter === null || item.postGenerator === postGeneratorFilter) &&
-                  (postSensorFilter === null || item.postSensor === postSensorFilter)
-    ) || [];
+    return (
+      users.visit[selectedVisitIndex]?.MedicalData.filter(
+        (item) =>
+          item.frequency === targetFrequency &&
+          (postGeneratorFilter === null || item.postGenerator === postGeneratorFilter) &&
+          (postSensorFilter === null || item.postSensor === postSensorFilter)
+      ) || []
+    );
   };
 
   const handleFrequencyChange = (event) => {
@@ -103,56 +111,56 @@ function BioGraph() {
     setVisualizationType((prevType) => (prevType === 'phaseAngle' ? 'bioImpedance' : 'phaseAngle'));
     setBio((prevBio) => (prevBio === 'Phase Angle' ? 'BioImpedance' : 'Phase Angle'));
   };
-  
 
   const getChartData = () => {
-    const timestamps = users.visit[selectedVisitIndex]?.MedicalData.map((medicalData) => formatTimestamp(medicalData.timestamp)) || [];
+    const timestamps =
+      users.visit[selectedVisitIndex]?.MedicalData.map((medicalData) => formatTimestamp(medicalData.timestamp)) || [];
 
     return {
-      color: ['#5793f3'],
+      color: ['#0066CC'], // Updated color theme
       xAxis: {
         type: 'category',
         data: timestamps,
         axisLine: {
           lineStyle: {
-            color: '#999'
-          }
+            color: '#999',
+          },
         },
         axisTick: {
-          show: false
+          show: false,
         },
         splitLine: {
-          show: false
+          show: false,
         },
       },
       yAxis: {
         type: 'value',
         axisLine: {
           lineStyle: {
-            color: '#999'
-          }
+            color: '#999',
+          },
         },
         axisTick: {
-          show: false
+          show: false,
         },
         splitLine: {
           lineStyle: {
             type: 'dashed',
-            color: '#DDD'
-          }
-        }
+            color: '#DDD',
+          },
+        },
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
           label: {
-            backgroundColor: '#6a7985'
-          }
+            backgroundColor: '#6a7985',
+          },
         },
-        formatter: function(params) {
+        formatter: function (params) {
           return `${params[0].name}: ${params[0].value}`;
-        }
+        },
       },
       dataZoom: [
         {
@@ -175,13 +183,13 @@ function BioGraph() {
           type: 'line',
           markLine: {
             data: [
-              { yAxis: 30, label: { formatter: '30', position: 'end' }},
-              { yAxis: 50, label: { formatter: '50', position: 'end' }},
-              { yAxis: 70, label: { formatter: '70', position: 'end' }},
-              { yAxis: 80, label: { formatter: '80', position: 'end' }},
-              { yAxis: 40, label: { formatter: '40', position: 'end' }},
-            ]
-          }
+              { yAxis: 30, label: { formatter: '30', position: 'end' } },
+              { yAxis: 50, label: { formatter: '50', position: 'end' } },
+              { yAxis: 70, label: { formatter: '70', position: 'end' } },
+              { yAxis: 80, label: { formatter: '80', position: 'end' } },
+              { yAxis: 40, label: { formatter: '40', position: 'end' } },
+            ],
+          },
         },
       ],
     };
@@ -191,8 +199,7 @@ function BioGraph() {
     return <h1>loading</h1>;
   } else {
     return (
-      <div className=" h-auto p-4 my-4 rounded-lg shadow-lg bg-white">
-       
+      <div className="h-auto p-4 my-4 rounded-lg shadow-lg bg-white">
         <button
           onClick={toggleVisualizationType}
           className="bg-blue-500 text-white py-2 m-2 px-4 rounded hover:bg-blue-700 transition duration-300"
@@ -228,7 +235,7 @@ function BioGraph() {
               onChange={handlePostGeneratorChange}
               className="border p-2  text-black"
             >
-              {Array.from({ length: 6 }, (_, index) => index ).map((value) => (
+              {Array.from({ length: 6 }, (_, index) => index).map((value) => (
                 <option key={value} value={value}>
                   {value}
                 </option>
@@ -245,7 +252,7 @@ function BioGraph() {
               onChange={handlePostSensorChange}
               className="border p-2  text-black"
             >
-              {Array.from({ length: 6 }, (_, index) => index ).map((value) => (
+              {Array.from({ length: 6 }, (_, index) => index).map((value) => (
                 <option key={value} value={value}>
                   {value}
                 </option>
@@ -270,15 +277,12 @@ function BioGraph() {
               </span>
             ) : (
               <span className="ml-2 text-black-500">Default Visit Date</span>
-          
             )}
           </div>
-          
         </div>
         <h2 className="text-2xl font-bold mb-4">{Bio === 'Phase Angle' ? 'Bioimpedance' : 'Phase Angle'}</h2>
         <div id="chart" style={{ width: '100%', height: '400px' }}></div>
-        
-   
+
         {averageValue && (
           <div className="mt-4">
             <h3 className="text-lg font-bold mb-2">Average Value</h3>
@@ -288,8 +292,6 @@ function BioGraph() {
             </div>
           </div>
         )}
-
-        
       </div>
     );
   }
