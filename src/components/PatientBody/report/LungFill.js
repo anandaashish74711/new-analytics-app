@@ -33,7 +33,13 @@ const HeartFill = ({ percentage, color }) => {
     };
   }, [percentage, color]);
 
-  return <canvas ref={canvasRef} style={{ width: '300px', height: '300px' }} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="h-60 w-20"
+      style={{ width: '100px', height: '100px' }}
+    />
+  );
 };
 
 export default HeartFill;

@@ -21,8 +21,10 @@ function App() {
         <Route path="doctor/patient/:userID" element={<Body/>} />
         <Route path="nurse/patient/:userID" element={<Body/>} />
         <Route path="nurse/:userID" element={<NurseBody />} />
+        <Route path="doctor/nurse/:userID" element={<NurseBody />} />
         <Route path="patient/:userID" element={<Body />} />
         <Route path="patient/:userID/report" element={<Report />} />
+    
         
       </Route>
     </Routes>

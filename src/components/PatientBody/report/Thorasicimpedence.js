@@ -78,7 +78,7 @@ function ImpedanceChart() {
   };
 
   return (
-     <div className=" h-400 rounded-lg m-6 mr-4 p-2 transition ease-in-out delay-150 bg-purple-100 hover:-translate-y-1 "> 
+     <div className=" h-400 rounded-lg m-6 mr-4 p-2 transition ease-in-out delay-150 bg-white-200 shadow-2xl hover:-translate-y-1 "> 
       <div className="chart-controls">
         <label htmlFor="startDate">Start Date:</label>
         <input type="date" id="startDate" onChange={(e) => handleDateFilter(new Date(e.target.value), null)} />

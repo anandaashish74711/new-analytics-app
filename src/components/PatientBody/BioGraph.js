@@ -199,7 +199,7 @@ function BioGraph() {
     return <h1>loading</h1>;
   } else {
     return (
-      <div className="h-auto p-4 my-4 rounded-lg shadow-lg bg-white">
+      <div className="h-auto p-4 my-4 rounded-lg shadow-2xl bg-white-200 ">
         <button
           onClick={toggleVisualizationType}
           className="bg-blue-500 text-white py-2 m-2 px-4 rounded hover:bg-blue-700 transition duration-300"
@@ -209,7 +209,7 @@ function BioGraph() {
 
         <div className="flex flex-wrap mb-4">
           <div className="flex items-center mb-2 mr-4">
-            <label htmlFor="targetFrequency" className="mr-2">
+            <label htmlFor="targetFrequency" className="mr-2 text-black text-l font-semibold">
               Target Frequency:
             </label>
             <select
@@ -226,7 +226,7 @@ function BioGraph() {
             </select>
           </div>
           <div className="flex items-center mb-2 mr-4">
-            <label htmlFor="postGenerator" className="mr-2">
+            <label htmlFor="postGenerator" className="mr-2  text-black text-l font-semibold">
               Electrode 1:
             </label>
             <select
@@ -243,7 +243,7 @@ function BioGraph() {
             </select>
           </div>
           <div className="flex items-center mb-2">
-            <label htmlFor="postSensor" className="mr-2">
+            <label htmlFor="postSensor" className="mr-2  text-black text-l font-semibold">
               Electrode 2:
             </label>
             <select
@@ -261,7 +261,7 @@ function BioGraph() {
           </div>
 
           <div className="flex items-center mb-2">
-            <label htmlFor="visitIndex" className="mr-2">
+            <label htmlFor="visitIndex" className="mr-2  text-black text-l font-semibold">
               Visit:
             </label>
             <input
@@ -273,22 +273,23 @@ function BioGraph() {
             />
             {users.visit[selectedVisitIndex] ? (
               <span className="ml-2 text-black-500">
-                Visit Date: {formatTimestamp(users.visit[selectedVisitIndex].visitDate)}
+              <p className=' text-black text-l font-semibold'> Visit Date: {formatTimestamp(users.visit[selectedVisitIndex].visitDate)}</p> 
               </span>
             ) : (
-              <span className="ml-2 text-black-500">Default Visit Date</span>
+              <span className="ml-2 text-black-500">
+                <p className='text-black'>Default Visit Date</p></span>
             )}
           </div>
         </div>
-        <h2 className="text-2xl font-bold mb-4">{Bio === 'Phase Angle' ? 'Bioimpedance' : 'Phase Angle'}</h2>
+        <h2 className="text-2xl font-bold text-black mb-4">{Bio === 'Phase Angle' ? 'Bioimpedance' : 'Phase Angle'}</h2>
         <div id="chart" style={{ width: '100%', height: '400px' }}></div>
 
         {averageValue && (
-          <div className="mt-4">
+          <div className="mb-3 ">
             <h3 className="text-lg font-bold mb-2">Average Value</h3>
             <div className="flex items-center">
-              <span className="mr-2">Average {Bio === 'Phase Angle' ? 'Bioimpedance' : 'Phase Angle'}:</span>
-              <span className="text-red-500 font-bold">{averageValue.toFixed(2)}</span>
+              <span className="mr-2 font-semibold text-blue-800">Average {Bio === 'Phase Angle' ? 'Bioimpedance' : 'Phase Angle'}:</span>
+              <span className="text-blue-800 font-bold">{averageValue.toFixed(2)}</span>
             </div>
           </div>
         )}

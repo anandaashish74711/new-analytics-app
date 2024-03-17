@@ -4,8 +4,9 @@ import ComorbiditiesCard from './combodities';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../features/FetchapiSlice';
 import { useParams, Link } from 'react-router-dom'; // Import Link
-import Report from './report/report';
+import { AiFillFileText } from "react-icons/ai";
 import BioGraph from './BioGraph';
+
 
 export default function Body() {
   const { userID } = useParams();
@@ -20,15 +21,24 @@ export default function Body() {
 
   return (
     <>
-      <div className='h-20 w-screen shadow-lg mt-2 flex items-center justify-center'>
-  {/* Link to navigate to the report */}
-  <Link
-    to={`/dashboard/patient/${userID}/report`}
-    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300'
-  >
-    View Report
-  </Link>
-</div>
+  <div className='h-20 w-screen bg-blue-800 shadow-lg mt-2 flex items-center justify-between px-4'>
+      {/* Left Content */}
+      <div className='flex items-center'>
+        <h1 className='font-bold text-2xl text-white py-4 px-4'>IHUB-DATA</h1>
+      </div>
+
+      {/* Right Content */}
+      <div className='flex items-center'>
+        <Link
+          to={`/dashboard/patient/${userID}/report`}
+          className='bg-white-500 hover:bg-white-700 text-white h-10 font-bold py-2 px-4 rounded transition duration-300 flex items-center'
+        >
+          {/* Adjusted the icon size and added margin */}
+          <AiFillFileText className='text-2xl mr-2' />
+          View Report
+        </Link>
+      </div>
+    </div>
       <div className='flex text-white'>
         <div className='mt-3'>
           <Profile />

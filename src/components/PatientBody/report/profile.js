@@ -5,9 +5,9 @@ export default function Header() {
   const userData = useSelector((state) => state.app.users);
 
   return (
-    <header className="bg-purple-500 py-4">
+    <header className="bg-blue-800 py-4 shadow-lg">
       <div className="container mx-auto flex items-center justify-between">
-        <h1 className="text-white text-2xl font-bold">User Profile</h1>
+        <h1 className="text-white text-2xl font-bold">IHUB-DATA</h1>
         {userData && (
           <div className="flex items-center space-x-4">
             <img
