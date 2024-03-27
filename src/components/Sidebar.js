@@ -3,9 +3,27 @@ import LogoutButton from '../Logout/Logout';
 import { useSelector } from 'react-redux';
 import { FaBars, FaTimes, FaHome, FaUser, FaCog } from 'react-icons/fa';
 
-
 const Sidebar = ({ collapsed, toggleSidebar, toggleSidebarCompletely }) => {
   const userData = useSelector((state) => state.auth.user);
+
+  let navContent;
+  if (userData.role === 'Nurse' || userData.role === 'doctor') {
+    navContent = (
+      <nav className="space-y-5">
+        <a href="#" className="text-white hover:text-gray-300 block"><FaHome className="inline-block mr-2" />Dashboard</a>
+        <a href="#" className="text-white hover:text-gray-300 block"><FaUser className="inline-block mr-2" />Patients</a>
+        <a href="#" className="text-white hover:text-gray-300 block"><FaCog className="inline-block mr-2" />Appointments</a>
+      </nav>
+    );
+  } else {
+    navContent = (
+      <nav className="space-y-5">
+        <a href="#" className="text-white hover:text-gray-300 block"><FaHome className="inline-block mr-2" />Visits</a>
+        <a href="#" className="text-white hover:text-gray-300 block"><FaUser className="inline-block mr-2" />Settings</a>
+        <a href="#" className="text-white hover:text-gray-300 block"><FaCog className="inline-block mr-2" />Appointments</a>
+      </nav>
+    );
+  }
 
   return (
     <div className={`bg-blue-800 h-full fixed w-1/6 p-4 flex flex-col ${collapsed ? 'hidden' : ''}`}>
@@ -17,13 +35,8 @@ const Sidebar = ({ collapsed, toggleSidebar, toggleSidebarCompletely }) => {
           {collapsed ? <FaBars className="text-white" /> : <FaTimes className="text-white" />}
         </div>
       </div>
-      <nav className="space-y-5 ">
-        <a href="#" className="text-white hover:text-gray-300 block"><FaHome className="inline-block mr-2" />Dashboard</a>
-        <a href="#" className="text-white hover:text-gray-300 block"><FaUser className="inline-block mr-2" />Patients</a>
-        <a href="#" className="text-white hover:text-gray-300 block"><FaCog className="inline-block mr-2" />Appointments</a>
-      </nav>
+      {navContent}
       <div className="mt-80 flex items-center space-x-4">
-       
         <LogoutButton />
       </div>
       <div className="mt-auto flex items-center space-x-4">
@@ -34,7 +47,6 @@ const Sidebar = ({ collapsed, toggleSidebar, toggleSidebarCompletely }) => {
           className="rounded-full w-8 h-8"
         />
       </div>
-     
     </div>
   );
 };

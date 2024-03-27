@@ -85,7 +85,7 @@ export default function NurseBody() {
                 <p className="text-primary text-md font-medium">{patient.patientName}</p>
               </div>
               <button 
-                className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" 
+                className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto " 
                 onClick={() => handleView(patient.patientId, 'patient')}>
                 <p className='text-white'>View</p>
               </button>

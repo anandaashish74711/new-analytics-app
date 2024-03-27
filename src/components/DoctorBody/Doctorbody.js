@@ -45,8 +45,8 @@ export default function DoctorBody() {
         </div>
         {/* Other Data */}
         <div className="h-24 w-64 bg-blue-800 text-white ml-10 mt-10 text-center p-6 rounded-lg col-span-1 text-2xl">
-          {userData?.patients ? userData.patients.length : 0} 
-          <div className="text-white text-sm ">Total Patients</div>
+          <h1>17</h1> 
+          <div className="text-white text-sm ">Toatal Count</div>
         </div>
       </div>
 
@@ -80,8 +80,8 @@ export default function DoctorBody() {
   <div className="flex-wrap" style={{ maxHeight: '300px', overflowY: 'auto' }}>
     
     {filteredData.map((data, index) => (
-      <div key={index} className="p-2 m-2 border rounded-lg bg-white shadow-md w-full flex items-center justify-between">
-        <p className="text-primary text-md font-medium">
+      <div key={index} className="p-2 m-2 grid grid-cols-3 gap-4 border rounded-lg bg-white shadow-md w-full  items-center justify-between">
+        <p className="text-primary text-md font-medium ">
           {showNurses ? data.nurseName : data.patientName}
         </p>
         {showNurses && data.patientName && (
@@ -94,7 +94,7 @@ export default function DoctorBody() {
             {data.nurseName}
           </p>
         )}
-        <button className="toggle bg-blue-500 rounded-md mr-4 h-9 w-16 transition hover:bg-blue-600 ml-auto" onClick={() => handleView(showNurses ? data.nurseId : data.patientId, showNurses ? 'nurse' : 'patient')}>
+    <button className={`toggle bg-blue-500 rounded-md h-9 w-${showNurses ? '16 col-span-2' : '36'} transition hover:bg-blue-600 ml-auto`} onClick={() => handleView(showNurses ? data.nurseId : data.patientId, showNurses ? 'nurse' : 'patient')}>
           <p className='text-white'>View</p>
         </button>
       </div>
